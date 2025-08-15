@@ -28,8 +28,8 @@ Hi! My name is [Anwita Bandaru].
 <a href="https://open-coding-society.github.io/student">
     <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?logo=github&logoColor=white" alt="GitHub Pages">
 </a>
-<a href="https://kasm.opencodingsociety.com/" class="button small" style="background-color: #A26360">
-    <p style="color: #f4d1b5ff">KASM.</p>
+<a href="https://kasm.opencodingsociety.com/" class="button small" style="background-color: #A26360 ;color: #f4d1b5ff">
+    <span style="color: #f4d1b5ff">KASM.</span>
 </a>
 <a href="https://vscode.dev/" class="button small" style="background-color: #A26360">
     <span style="color: #f4d1b5ff">VSCODE</span>
@@ -39,8 +39,8 @@ Hi! My name is [Anwita Bandaru].
 
 ### Class Progress
 
-<a href="{{site.baseurl}}/snake" class="button small" style="background-color: #A26360">
-    <p style="color: #f4d1b5ff">Snake.</p>
+<a href="{{site.baseurl}}/snake" class="button small" style="background-color: #A26360; color: #f4d1b5ff">
+    <span style="color: #f4d1b5ff">Snake.</span>
 </a>
 <a href="{{site.baseurl}}/turtle" class="button small" style="background-color: #A26360">
     <span style="color: #f4d1b5ff">Turtle</span>
