@@ -29,21 +29,21 @@ Hi! My name is [Anwita Bandaru].
     <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?logo=github&logoColor=white" alt="GitHub Pages">
 </a>
 <a href="https://kasm.opencodingsociety.com/" class="button small" style="background-color: #A26360">
-    KASM
+    <p style="color: #f4d1b5ff">KASM.</p>
 </a>
 <a href="https://vscode.dev/" class="button small" style="background-color: #A26360">
-    <span style="color: #886345ff">VSCODE</span>
+    <span style="color: #f4d1b5ff">VSCODE</span>
 </a>
 
 <br>
 
 ### Class Progress
 
-<a href="{{site.baseurl}}/snake" class="button small" style="background-color: #D4A29C">
-    Snake Game
+<a href="{{site.baseurl}}/snake" class="button small" style="background-color: #A26360">
+    <p style="color: #f4d1b5ff">Snake.</p>
 </a>
-<a href="{{site.baseurl}}/turtle" class="button small" style="background-color: #E8B298">
-    <span style="color: #473626ff">Turtle</span>
+<a href="{{site.baseurl}}/turtle" class="button small" style="background-color: #A26360">
+    <span style="color: #f4d1b5ff">Turtle</span>
 </a>
 
 <br>
