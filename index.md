@@ -55,12 +55,4 @@ Hi! My name is Anwita Bandaru
 
 Click the button below for confetti:
 
-<a href="javascript:void(0)" style="text-decoration: none;">
-  <div onclick="confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } })"
-       style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; text-align: center; cursor: pointer;">
-    🎉 Celebrate
-  </div>
-</a>
-
-<!-- load the confetti library -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+{% include confetti.html %}
