@@ -33,7 +33,7 @@ Hi! My name is Anwita Bandaru
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
-        <div style="background-color: #a26360; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
+        <div style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             Snake Game
         </div>
     </a>
@@ -52,3 +52,24 @@ Hi! My name is Anwita Bandaru
 > Feel free to reach out if you'd like to collaborate or learn more about our work.
 
 <p style="color: #a26360;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #a26360; text-decoration: underline;">Socials</a></p>
+
+Click the button below for confetti:
+
+<button id="confettiBtn">Celebrate!</button>
+
+<!-- load the confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<script>
+  const button = document.getElementById("confettiBtn");
+  button.addEventListener("click", () => {
+    confetti({
+      particleCount: 200,
+      spread: 90,
+      origin: { y: 0.6 }
+    });
+  });
+</script>
+<button id="confettiBtn" style="background-color: #a26360; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+  Celebrate!
+</button>
