@@ -60,18 +60,18 @@ Click the button below for confetti:
 
 <!-- Cat Walk Animation Section -->
 <button id="cat-walk-btn" style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; margin-top: 20px;">Make Cat Walk!</button>
-<div id="cat-container" style="position: relative; height: 120px; width: 100%; overflow: hidden;">
-    <img id="cat-img" src="https://cdn.pixabay.com/photo/2017/01/06/19/15/cat-1951307_1280.png" alt="Cat" style="position: absolute; left: -150px; top: 10px; height: 100px; transition: left 2s linear;" />
+<div id="cat-container" style="position: relative; height: 200px; width: 100%; overflow: hidden; border: 2px dashed #a26360; background: #fffbe6;">
+    <img id="cat-img" src="https://battlecats.club/en/series/battlecats/img/game_chara01.png" alt="Cat" style="position: absolute; left: -200px; top: 10px; height: 180px; transition: left 4s linear; background: #fffbe6;" />
 </div>
 <script>
 document.getElementById('cat-walk-btn').onclick = function() {
     var cat = document.getElementById('cat-img');
-    cat.style.left = '-150px'; // Reset position
+    cat.style.left = '-200px'; // Reset position
     setTimeout(function() {
-        cat.style.left = (window.innerWidth - 150) + 'px';
+        cat.style.left = (window.innerWidth - 200) + 'px';
     }, 100);
     setTimeout(function() {
-        cat.style.left = '-150px'; // Hide after walk
-    }, 2200);
+        cat.style.left = '-200px'; // Hide after walk
+    }, 4100);
 };
 </script>
