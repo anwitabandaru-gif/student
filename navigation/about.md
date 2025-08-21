@@ -1,3 +1,4 @@
+
 ---
 layout: post
 title: About
@@ -58,12 +59,9 @@ Flags are made using Wikipedia images
     var container = document.getElementById("grid_container"); // This container connects to the HTML div
 
     // 2. Define a JavaScript object for our http source and our data rows for the Living in the World grid
-    var http_source = "https://upload.wikimedia.org/wikipedia/commons/";
     var living_in_the_world = [
-        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hey", "description": "California - forever"},
-        {"flag": "b/b9/Flag_of_Oregon.svg", "greeting": "Hi", "description": "Oregon - 9 years"},
-        {"flag": "b/be/Flag_of_England.svg", "greeting": "Alright mate", "description": "England - 2 years"},
-        {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - 2 years"},
+        {"img": "https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg", "greeting": "Hey, like-", "description": "California - SUNNY DAYS"},
+        {"img": "https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg", "greeting": "Namaste", "description": "India - family roots"}
     ];
 
     // 3a. Consider how to update style count for size of container
@@ -71,28 +69,18 @@ Flags are made using Wikipedia images
 
     // 3b. Build grid items inside of our container for each row of data
     for (const location of living_in_the_world) {
-        // Create a "div" with "class grid-item" for each row
         var gridItem = document.createElement("div");
-        gridItem.className = "grid-item";  // This class name connects the gridItem to the CSS style elements
-        // Add "img" HTML tag for the flag
+        gridItem.className = "grid-item";
         var img = document.createElement("img");
-        img.src = http_source + location.flag; // concatenate the source and flag
-        img.alt = location.flag + " Flag"; // add alt text for accessibility
-
-        // Add "p" HTML tag for the description
+        img.src = location.img;
+        img.alt = location.description;
         var description = document.createElement("p");
-        description.textContent = location.description; // extract the description
-
-        // Add "p" HTML tag for the greeting
+        description.textContent = location.description;
         var greeting = document.createElement("p");
-        greeting.textContent = location.greeting;  // extract the greeting
-
-        // Append img and p HTML tags to the grid item DIV
+        greeting.textContent = location.greeting;
         gridItem.appendChild(img);
         gridItem.appendChild(description);
         gridItem.appendChild(greeting);
-
-        // Append the grid item DIV to the container DIV
         container.appendChild(gridItem);
     }
 </script>
@@ -101,23 +89,105 @@ Flags are made using Wikipedia images
 
 Here is what I did at those places
 
-- 🏫 Lots of Elementary Schools in Tucson, LA, Honolulu, and Glendale (CA)
-- 🏫 Middle and High School in Glendale (CA), Hoover High graduated '77
-- 🎓 Glendale CA Community College, UCLA Extension, LA Wilshire Computer Tech School '77 to '79
-- ⛪ England, London Missionary for Church of Jesus Christ of Latter-day Saints '79 to '81
-- 💼 Culver City, Glendale CA founder at Ashton-Tate, original PC's dBase 2 and 3 '82 to '87
-- 🎓 Eugene Oregon Undergraduate CompSci Degree at University of Oregon (Go Ducks!) '89 to '91
-- 💼 Eugene Oregon, founder and owner @ Microniche `88, Point Control CAD CAM developer '91 to '96
-- 🏢 San Diego CA Qualcomm, Satellite Comm and 1st Mobile OS (BREW) '96 to '19
-- 👨‍🏫 San Diego CA Teacher of Computer Science @ Del Norte High School San Diego '19 to present
+- 🏫 I lived in San Diego since birth, going to Monterey Elementary School in 4S Ranch
+- 🏫 Middle and High School in 4S Ranch (CA), Current Junior at Del Norte Highschool
+- 💃I completed my Dance Arangetram in the summer of 2025 after 9 years of dance
+- 🎓 Part of the Del Norte Varsity Golf Team 
+- 🧫 Part of the DNHS iGEM team and work with the Yeo Lab at UCSD
+- 🍵My dream job is to join own a matcha cafe and have a pet samoyed.
+
+<style>
+  .receipt-container {
+    position: relative;
+    margin: 20px 0;
+  }
+
+  .receipt-btn {
+    background-color: #576e35ff; /* matcha green */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s ease;
+  }
+
+  .receipt-btn:hover {
+    background-color: #576e35ff;
+  }
+
+  .receipt {
+    max-height: 0;
+    overflow: hidden;
+    background: #fff;
+    color: #333;
+    font-family: monospace;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    margin-top: 10px;
+    padding: 0 15px;
+    width: 220px;
+    transition: max-height 0.6s ease;
+  }
+
+  .receipt.open {
+    max-height: 500px; /* enough room to expand */
+    padding: 15px;
+  }
+
+  .receipt h4 {
+    margin: 0 0 10px 0;
+    text-align: center;
+    border-bottom: 1px dashed #aaa;
+    padding-bottom: 5px;
+  }
+
+  .receipt p {
+    margin: 4px 0;
+  }
+
+  .receipt .total {
+    margin-top: 10px;
+    border-top: 1px dashed #aaa;
+    padding-top: 5px;
+    text-align: right;
+    font-weight: bold;
+  }
+</style>
+
+<div class="receipt-container">
+  <button class="receipt-btn" onclick="toggleReceipt()">🍵 Reveal My Matcha Order</button>
+  <div class="receipt" id="receipt">
+    <h4>Matcha Order</h4>
+    <p>Drink: Iced Matcha Latte</p>
+    <p>Sweetness: 50% Sugar</p>
+    <p>Ice: Light Ice</p>
+    <p>Size: Grande</p>
+    <div class="total">Total: $4.50</div>
+  </div>
+</div>
+
+<script>
+  function toggleReceipt() {
+    const receipt = document.getElementById("receipt");
+    receipt.classList.toggle("open");
+  }
+</script>
 
 ### Culture, Family, and Fun
 
-Everything for me, as for many others, revolves around family and faith.
+Everything for me, revolves around my friends and family. 
 
-- My mother told me that I was Danish, English. and Irish, here is my researched [family tree]({{site.baseurl}}/images/about/familytree.png)
-- My family is pretty big as I have been married twice, my 1st wife passed away.  We have had 5 kids, 4 adopted by me, 1 biological.  Plus, there are three grandkids.  My name to my grandkids is Abuilito.
-- The gallery of pics has some of my family, fun, culture and faith memories.
+- I am 100% Indian but my dad is from North India and my mom is from South India
+- I have an older sister named Aditi. People say we look alike, but no one in my family thinks so. 
+- I have 6 cousins and I'm the youngest in my extended family. I'm also the only left handed person in my whole family. 
+- My favorite show is Money Heist, but I don't watch a lot of TV. My favorite character is Tigger from Winnie the Pooh
+- In my free time, I enjoy listening to music and going to local cafes with my friends!🧋☕ 
+
+<h3>Here's some of my Favorite Music</h3>
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4QhWbupniDd44EDtnh2bFJ?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0QyJXG36Q3Kta662XS8GhY?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 <comment>
 Gallery of Pics, scroll to the right for more ...
