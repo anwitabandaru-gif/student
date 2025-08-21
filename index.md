@@ -60,7 +60,7 @@ Click the button below for confetti:
 
 <!-- Cat Walk Animation Section -->
 <button id="cat-walk-btn" style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; margin-top: 20px;">Make Cat Walk!</button>
-<div id="cat-container" style="position: relative; height: 200px; width: 100%; overflow: hidden; border: 2px dashed #a26360; background: #fffbe6;">
+<div id="cat-container" style="position: relative; height: 200px; width: 100%; overflow: hidden; border: 2px dashed #a26360;">
     <img id="cat-img" src="https://battlecats.club/en/series/battlecats/img/game_chara01.png" alt="Cat" style="position: absolute; left: -200px; top: 10px; height: 180px; transition: left 4s linear; background: #fffbe6;" />
 </div>
 <script>
