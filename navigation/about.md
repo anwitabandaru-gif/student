@@ -140,6 +140,7 @@ Here is what I did at those places
     text-align: center;
     border-bottom: 1px dashed #aaa;
     padding-bottom: 5px;
+    color: #576e35ff;
   }
 
   .receipt p {
@@ -157,7 +158,7 @@ Here is what I did at those places
 
 <div class="receipt-container">
   <button class="receipt-btn" onclick="toggleReceipt()">🍵 Reveal My Matcha Order</button>
-  <div class="receipt" id="receipt">
+  <div class="receipt" id="receipt" style="color: #6d5430ff;">
     <h4>Matcha Order</h4>
     <p>Drink: Iced Matcha Latte</p>
     <p>Sweetness: 50% Sugar</p>
@@ -185,23 +186,21 @@ Everything for me, revolves around my friends and family.
 - In my free time, I enjoy listening to music and going to local cafes with my friends!🧋☕ 
 
 <h3>Here's some of my Favorite Music</h3>
-<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4QhWbupniDd44EDtnh2bFJ?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0QyJXG36Q3Kta662XS8GhY?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4QhWbupniDd44EDtnh2bFJ?utm_source=generator" width="100%" height="252" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0QyJXG36Q3Kta662XS8GhY?utm_source=generator" width="100%" height="252" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4S4Mfvv03M1cHgIOJcbUCL?utm_source=generator" width="100%" height="252" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 <comment>
-Gallery of Pics, scroll to the right for more ...
+I also really like food. Here's some of my favorite foods!🍝
 </comment>
 <div class="image-gallery">
-  <img src="{{site.baseurl}}/images/about/missionary.jpg" alt="Image 1">
-  <img src="{{site.baseurl}}/images/about/john_tamara.jpg" alt="Image 2">
-  <img src="{{site.baseurl}}/images/about/tamara_fam.jpg" alt="Image 3">
-  <img src="{{site.baseurl}}/images/about/surf.jpg" alt="Image 4">
-  <img src="{{site.baseurl}}/images/about/john_lora.jpg" alt="Image 5">
-  <img src="{{site.baseurl}}/images/about/lora_fam.jpg" alt="Image 6">
-  <img src="{{site.baseurl}}/images/about/lora_fam2.jpg" alt="Image 7">
-  <img src="{{site.baseurl}}/images/about/pj_party.jpg" alt="Image 8">
-  <img src="{{site.baseurl}}/images/about/trent_family.png" alt="Image 9">
-  <img src="{{site.baseurl}}/images/about/claire.jpg" alt="Image 10">
-  <img src="{{site.baseurl}}/images/about/grandkids.jpg" alt="Image 11">
-  <img src="{{site.baseurl}}/images/about/farm.jpg" alt="Image 12">
+  <img src="https://thefoodiediaries.co/wp-content/uploads/2023/03/img_2354-e1678956380440.jpg" alt="Image 1">
+  <img src="https://i0.wp.com/smittenkitchen.com/wp-content/uploads/2021/02/rigatoni-alla-vodka-1-scaled.jpg?fit=1200%2C800&ssl=1" alt="Image 2">
+  <img src="https://fox5sandiego.com/wp-content/uploads/sites/15/2023/04/raisingcanes-800x500-1.jpg?w=800" alt="Image 3">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGxTF-6-po8yNTZBmLaP4Wo3JPT3BQ9KJxFg&s" alt="Image 4">
+  <img src="https://whatsinthepan.com/wp-content/uploads/2019/02/Chicken-Parmesan-2.jpg" alt="Image 5">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRP8TT5yrQL9VLVB84RX1BA8CGcfiV7t6MzQ&s" alt="Image 6">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_JV1CFPpG-TVY6BN2y5Ko2_YNJSPH9RgaPg&s" alt="Image 7">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl_p-_Z2acLuScUHEEcw8nSp8GuxLFA8XS2w&s" alt="Image 8">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhG9pMi3c_TCEJr-jp2mGRfAxM4E-BSK4ulQ&s" alt="Image 9">
 </div>
