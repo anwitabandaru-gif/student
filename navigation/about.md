@@ -5,7 +5,7 @@ permalink: /about/
 comments: true
 ---
 
-## As a conversation Starter
+## About me!
 
 Here is where I have lived and my ethnic homeland
 
@@ -144,6 +144,7 @@ Here is what I did at those places
 
   .receipt p {
     margin: 4px 0;
+    color: #6d5430ff !important;
   }
 
   .receipt .total {
