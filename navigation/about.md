@@ -139,7 +139,7 @@ Here is what I did at those places
     text-align: center;
     border-bottom: 1px dashed #aaa;
     padding-bottom: 5px;
-    color: #576e35ff;
+    color: #576e35ff !important;
   }
 
   .receipt p {
