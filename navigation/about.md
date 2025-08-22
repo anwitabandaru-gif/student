@@ -120,7 +120,6 @@ Here is what I did at those places
     max-height: 0;
     overflow: hidden;
     background: #f1eadaff;   
-    color: #222;   
     font-family: monospace;
     border: 2px dashed #aba4a0ff;
     border-radius: 6px;
