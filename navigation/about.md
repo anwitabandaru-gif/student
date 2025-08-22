@@ -204,3 +204,7 @@ I also really like food. Here's some of my favorite foods!🍝
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl_p-_Z2acLuScUHEEcw8nSp8GuxLFA8XS2w&s" alt="Image 8">
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhG9pMi3c_TCEJr-jp2mGRfAxM4E-BSK4ulQ&s" alt="Image 9">
 </div>
+Click the button below for confetti:
+
+{% include confetti.html %}
+<br>
