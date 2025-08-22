@@ -7,7 +7,7 @@ comments: true
 
 ## As a conversation Starter
 
-Here are some places I have lived.
+Here is where I have lived and my ethnic homeland
 
 <comment>
 Flags are made using Wikipedia images
@@ -119,10 +119,10 @@ Here is what I did at those places
   .receipt {
     max-height: 0;
     overflow: hidden;
-    background: #fff;
-    color: #333;
+    background: #f1eadaff;   
+    color: #222;   
     font-family: monospace;
-    border: 2px dashed #ccc;
+    border: 2px dashed #aba4a0ff;
     border-radius: 6px;
     margin-top: 10px;
     padding: 0 15px;
@@ -159,12 +159,12 @@ Here is what I did at those places
 <div class="receipt-container">
   <button class="receipt-btn" onclick="toggleReceipt()">🍵 Reveal My Matcha Order</button>
   <div class="receipt" id="receipt" style="color: #6d5430ff;">
-    <h4>Matcha Order</h4>
-    <p>Drink: Iced Matcha Latte</p>
-    <p>Sweetness: 50% Sugar</p>
-    <p>Ice: Light Ice</p>
-    <p>Size: Grande</p>
-    <div class="total">Total: $4.50</div>
+  <h4 style="color: #6d5430ff;">Matcha Order</h4>
+  <p style="color: #6d5430ff;">Drink: Iced Matcha Latte</p>
+  <p style="color: #6d5430ff;">Sweetness: 50% Sugar</p>
+  <p style="color: #6d5430ff;">Ice: Light Ice</p>
+  <p style="color: #6d5430ff;">Size: Regular</p>
+    <div class="total">Total: $5.50</div>
   </div>
 </div>
 
