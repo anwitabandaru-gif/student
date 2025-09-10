@@ -9,10 +9,9 @@ breadcrumb: /tools
 breadcrumbs: True
 ---
 
-## 🔧 Common Issues I've experiences
+## 🔧 Common Issues I've experienced
 
-Use this page if something is not working.  
-Each section is independent — jump directly to the area you are stuck. 
+Operating the make command was one of the most common issues I experienced. I frequently ran into errors where the server would not start, time out, or fail due to ports already being in use. These problems often required me to troubleshoot by killing stray processes, switching ports, or even bypassing the Makefile and running Jekyll directly. While frustrating, it taught me how the server was actually working behind the scenes and gave me a better understanding of the tools I was using.
 
 ## 🔧 Tool Setup Troubleshooting Guide
 
@@ -192,3 +191,40 @@ done
     ### Command: git config --global user.email
     jmort1021@gmail.com
 
+---
+
+## 🔧 Makefile Issues I've Experienced
+
+Here are some common problems and solutions when working with Makefiles:
+
+- **Command not found:**
+  - The Makefile references a command (like `python`, `pip`, or `bundle`) that isn't installed or isn't in your PATH.
+  - Solution: Install the missing tool or check your PATH variable.
+
+- **Permission denied:**
+  - You get a permission error running `make` or a command inside the Makefile.
+  - Solution: Use `chmod +x <script>` to make scripts executable, or run with `sudo` if appropriate (be careful with sudo).
+
+- **Target not found / No rule to make target:**
+  - You run `make <target>` and get an error that the target doesn't exist.
+  - Solution: Check the spelling of your target, and ensure the Makefile defines it.
+
+- **Environment not activated:**
+  - Makefile commands fail because your Python virtual environment isn't activated.
+  - Solution: Activate your environment before running `make`, or add activation steps to the Makefile.
+
+- **File not found errors:**
+  - The Makefile tries to run or build a file that doesn't exist (like a missing script or notebook).
+  - Solution: Check file paths and ensure all required files are present.
+
+- **Dependency errors:**
+  - `make` fails because required packages aren't installed.
+  - Solution: Run `pip install -r requirements.txt` or the equivalent for your language.
+
+- **Output not updating:**
+  - You run `make` but changes aren't reflected, possibly due to caching or missing dependencies.
+  - Solution: Use `make clean` if available, or manually remove build/output files.
+
+## Conclusions and Resolutions 
+
+I am still new to CSP, and many of the challenges I faced with the make command and setup were part of learning. Experimenting with solutions and fixing problems on my own has taught me a lot. Each error helped me understand more about how things work, and I am gaining confidence as I continue to practice.
