@@ -2,7 +2,7 @@
 toc: True
 layout: post
 data: tools
-title: Troubleshooting for Beginners 
+title: Progress and Problems in Weeks 0-4
 description: Recovery guide for common issues with GitHub, cloning, virtual environments, and running your website.
 permalink: /tools/setupblog
 breadcrumb: /tools
@@ -255,7 +255,7 @@ Here are some milestones I've accomplished while working on this project:
   - Made changes to the background.md file
   - Learned how to use Make and local host server
   - By editing frontmatter, we can change the background image for our website
-  
+
 These steps helped me build confidence in using git, GitHub, and project management tools. Collaboration and documentation are key parts of my workflow!
 
 
