@@ -11,7 +11,7 @@ breadcrumbs: True
 
 ## 🔧 Common Issues I've experienced
 
-Operating the make command was one of the most common issues I experienced. I frequently ran into errors where the server would not start, time out, or fail due to ports already being in use. These problems often required me to troubleshoot by killing stray processes, switching ports, or even bypassing the Makefile and running Jekyll directly. While frustrating, it taught me how the server was actually working behind the scenes and gave me a better understanding of the tools I was using.
+Operating the make command was one of the most common issues I experienced over the first 4 weeks. I frequently ran into errors where the server would not start, time out, or fail due to ports already being in use. These problems often required me to troubleshoot by killing stray processes, switching ports, or even bypassing the Makefile and running Jekyll directly. While frustrating, it taught me how the server was actually working behind the scenes and gave me a better understanding of the tools I was using.
 
 ## 🔧 Tool Setup Troubleshooting Guide
 
@@ -227,4 +227,35 @@ Here are some common problems and solutions when working with Makefiles:
 
 ## Conclusions and Resolutions 
 
-I am still new to CSP, and many of the challenges I faced with the make command and setup were part of learning. Experimenting with solutions and fixing problems on my own has taught me a lot. Each error helped me understand more about how things work, and I am gaining confidence as I continue to practice.
+I am still new to CSP, and many of the challenges I faced with the make command and setup were part of the learning process. During the first four weeks of class, I spent time getting familiar with the structure of projects, understanding how files interact, and learning the basics of version control and debugging. These initial weeks involved a lot of trial and error—figuring out how to run programs correctly, navigating errors, and understanding the workflow of assignments.
+
+Experimenting with solutions and fixing problems on my own has taught me a great deal. Each error I encountered, from setup issues to code bugs, helped me understand more about how things work behind the scenes. I am gaining confidence in reading error messages, searching for solutions, and applying fixes effectively. Reflecting on these first weeks, I see clear progress in both my technical skills and my problem-solving approach, and I feel more prepared to tackle upcoming projects as I continue to practice.
+
+
+## My Progress & Achievements
+
+Here are some milestones I've accomplished while working on this project:
+
+- **Added an About Page:**
+  - Created an `about.md` page to introduce myself and the project, helping visitors understand the purpose and background.
+
+- **Cloned a Repository:**
+  - Successfully cloned the project repository from GitHub to my local machine, setting up my workspace for development.
+  - git clone
+
+- **Collaborated with My Team:**
+  - Worked together with my teammates on code, documentation, and troubleshooting. Used git for version control and communication to resolve issues and share progress.
+
+- **Jupyter Notebooks and Jokes**
+  - Opened and ran Jupyter Notebooks in VS Code
+  - Practiced with the Jokes.ipynb notebook and converted results into HTML format
+  - Added my own lawyer jokes
+
+- **Changing Background**
+  - Made changes to the background.md file
+  - Learned how to use Make and local host server
+  - By editing frontmatter, we can change the background image for our website
+  
+These steps helped me build confidence in using git, GitHub, and project management tools. Collaboration and documentation are key parts of my workflow!
+
+
