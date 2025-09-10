@@ -14,11 +14,12 @@ permalink: /background
 <script>
   const canvas = document.getElementById("world");
   const ctx = canvas.getContext('2d');
+  // Create Imag objects for the background and the player sprite
   const backgroundImg = new Image();
   const spriteImg = new Image();
   backgroundImg.src = '{{page.background}}';
   spriteImg.src = '{{page.sprite}}';
-
+//Counter to check when both images have finished loading
   let imagesLoaded = 0;
   backgroundImg.onload = function() {
     imagesLoaded++;
@@ -28,10 +29,10 @@ permalink: /background
     imagesLoaded++;
     startGameWorld();
   };
-
+// Start the game only if both images are loaded
   function startGameWorld() {
     if (imagesLoaded < 2) return;
-
+    //base class for all game objects
     class GameObject {
       constructor(image, width, height, x = 0, y = 0, speedRatio = 0) {
         this.image = image;
@@ -42,12 +43,13 @@ permalink: /background
         this.speedRatio = speedRatio;
         this.speed = GameWorld.gameSpeed * this.speedRatio;
       }
+      //Draw the objects on the canvas
       update() {}
       draw(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
-
+  // background class inherets the GameObject
     class Background extends GameObject {
       constructor(image, gameWorld) {
         // Fill entire canvas
@@ -61,7 +63,7 @@ permalink: /background
         ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
       }
     }
-
+  // Player inherets from the gameobject
     class Player extends GameObject {
       constructor(image, gameWorld) {
         const width = image.naturalWidth / 2;
@@ -77,11 +79,7 @@ permalink: /background
         this.frame++;
       }
     }
-
-
-    /* Game world is Mater class/object for the entire game
-    * the game look is inside
-    */
+    //Game world is Mater class/object for the entire game he game look is inside
     class GameWorld {
       static gameSpeed = 5;
       // image enters the world
@@ -116,9 +114,7 @@ permalink: /background
         this.gameLoop();
       }
     }
-
     const world = new GameWorld(backgroundImg, spriteImg);
-
     // starts the game world
     world.start();
   }
