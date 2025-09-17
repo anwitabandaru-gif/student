@@ -45,11 +45,11 @@ Here’s what’s different from the original Whack-a-Mole game:
 
 ## A New Mole Type 🟦
 
-I introduced a blue mole that shakes things up. Unlike regular moles, hitting the blue mole gives players +50 points, but there’s a catch—it also makes the game speed up. This twist forces players to think strategically: is it worth the risk of making the game harder just to rack up extra points?
+I introduced a blue mole that shakes things up. Unlike regular moles, hitting the blue mole gives players +50 points, but there’s a catch, it also makes the game speed up. This effect forces players to think strategically: is it worth the risk of making the game harder just to rack up extra points?
 
 ## Bigger Grid 🟩
 
-The original game used a 3×3 grid, but I expanded it to a 4×4 grid. With more holes for moles to appear in, players have to be sharper and faster to keep up. This change makes the game have more variety, and increases the difficulty in a natural way.
+The original game used a 3×3 grid, but I expanded it to a 4×4 grid. With more holes for moles to appear in, players have to be sharper and faster to keep up. This change makes the game have more variety, and increases the difficulty in a not so boring way.
 
 ## Link to Updated Game
 https://anwitabandaru-gif.github.io/student/whack_a_mole/
