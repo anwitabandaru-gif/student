@@ -50,3 +50,6 @@ I introduced a blue mole that shakes things up. Unlike regular moles, hitting th
 ## Bigger Grid 🟩
 
 The original game used a 3×3 grid, but I expanded it to a 4×4 grid. With more holes for moles to appear in, players have to be sharper and faster to keep up. This change makes the game have more variety, and increases the difficulty in a natural way.
+
+## Link to Updated Game
+https://anwitabandaru-gif.github.io/student/whack_a_mole/
