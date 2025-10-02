@@ -1,4 +1,3 @@
-
 ---
 title: Iterations Game — Learn loops (JavaScript & Python)
 layout: base
