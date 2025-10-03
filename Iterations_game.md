@@ -1,7 +1,7 @@
 ---
 title: Iterations Game — Learn loops (JavaScript & Python)
 layout: base
-permalink: /interations_game/
+permalink: /iterationsgame/
 ---
 
 # Iterations Game — Multiple Choice (JavaScript / Python)
