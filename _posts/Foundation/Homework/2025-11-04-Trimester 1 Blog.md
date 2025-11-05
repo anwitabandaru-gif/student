@@ -15,11 +15,11 @@ In the beginning of the year, I was still figuring out how everything worked in 
 - Tools Sprint: I learned how to use GitHub properly, from pushing and pulling code to writing issues. I also learned how to install VSCode and get my device set up. Learning how to use a virtual enviroment to test my code and change themes before commiting was a highlight of this sprint. It took a bit to get the hang of, but once I did, it made teamwork a lot easier. I started to understand how developers keep track of changes and work together on the same project without breaking things.
 
 - Fundamentals of JavaScript/Python: This sprint helped me really understand how programming languages are structured. I got a lot better at writing loops, conditionals, and functions, and I started noticing how similar logic looks in different languages like Javascript and Python. It was also the first time I felt confident enough to solve problems on my own without copying code from examples. I also got the experience of teaching my fellow classmates which lead me to make interactive elements in my lesson.
-<img src="../../../../../student/images/tri1/iterations" 
+<img src="../../../../../student/images/tri1/iterations.png" 
 alt="Console Output" style="max-width:300px; margin:10px;">
 
 - Digital Famine: This sprint was one of my favorites because it was more creative. I learned how to connect APIs and display data in a way that people could actually interact with. The debugging in this was also very helpful in me understanding how to better organize my code. Leaving comments on my work made it very easy to navigate diferent sections. It also made me realize how important communication is when working in a group. We had to plan the division of tasts and check in often to make sure everything fit together. Though it wasn't always smooth sailing in my group, we managed to accomplish our goals issued in our Kanban board.
-<img src="../../../../../student/images/tri1/biasgame" 
+<img src="../../../../../student/images/tri1/biasgame.png" 
 alt="Console Output" style="max-width:300px; margin:10px;">
 
 ### N@tM
