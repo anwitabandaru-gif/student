@@ -43,7 +43,7 @@ There is a number of uncounted commits that I made in branches as well under the
 
 ### Collegeboard MCQ
 #### Overall Feelings
-I took the 2018 AP CSP practice multiple choice exam without any prior research or review—just diving in cold to see where I actually stood with the material. Going into it, I had no idea what to expect, but I wanted an honest assessment of my strengths and weaknesses.
+I took the 2018 AP CSP practice multiple choice exam without any prior research or review, just going in cold to see where I actually stood with the material. Going into it, I had no idea what to expect, but I wanted an honest assessment of my strengths and weaknesses.
 **The Verdict: 48/66 (73%)**
 After about an hour and a half of testing, I ended up scoring 48 out of 66 points, which translates to roughly 73%. Not terrible, but definitely room for improvement. What really stood out to me wasn't just the score itself, but the clear patterns in what I found easy versus what gave me trouble.
 #### What Came Naturally: Digital Security
