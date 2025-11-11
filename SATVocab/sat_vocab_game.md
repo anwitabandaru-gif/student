@@ -1,6 +1,5 @@
 ---
 title: SAT Vocabulary Practice
-comments: true
 layout: post
 permalink: /vocabgame
 description: Study 1000 words from Sparknotes for the SAT
