@@ -7,13 +7,12 @@ description: Study 1000 words from Sparknotes for the SAT
 author: Anwita Bandaru
 ---
 
-## SAT Vocabulary Quiz — 1000 Words
+## SAT Vocabulary Quiz: 1000 Words
 
 > Test your SAT vocabulary knowledge. Your progress will automatically save in your browser’s local storage.
 
 <div align="center">
 
-<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
