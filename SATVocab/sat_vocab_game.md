@@ -1108,7 +1108,7 @@ author: Anwita Bandaru
       optionsEl.querySelectorAll(".option").forEach(o => o.style.pointerEvents = "none");
 
       if (isCorrect) {
-        explainBox.textContent = `✅ Correct — ${current.word}: ${current.definition}`;
+        explainBox.textContent = `✅ Correct: ${current.word}: ${current.definition}`;
         correctSet.add(current.word);
         localStorage.setItem("satCorrectWords", JSON.stringify([...correctSet]));
         updateScore();
