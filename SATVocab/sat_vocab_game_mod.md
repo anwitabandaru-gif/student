@@ -10,62 +10,43 @@ author: Anwita Bandaru
 
 > Test your SAT vocabulary knowledge. Your progress will automatically save in your browser’s local storage.
 
-<div align="center">
+<div id="sat-quiz" style="max-width:900px;margin:auto;">
 
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <style>
-body {
-  font-family: Inter, ui-sans-serif;
-  background: #0f1724;
+#sat-quiz body, #sat-quiz {
+  background: transparent !important;
   color: #e2e8f0;
-  padding: 2rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 2rem;
+  font-family: Inter, ui-sans-serif;
 }
-.container {
-  max-width: 640px;
-  flex: 2;
-}
-.sidebar {
-  flex: 1;
-  background: #1e293b;
-  padding: 1rem;
-  border-radius: 1rem;
-  height: fit-content;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-}
-.card {
+#quizWrapper {
   background: #1e293b;
   padding: 1.5rem;
   border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   margin-top: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
+.option {
+  background: #0b1220;
+  padding: .75rem;
+  border-radius: .5rem;
+  margin: .25rem 0;
+  cursor: pointer;
+}
+.option.selected { border: 1px solid #7dd3fc; }
 .btn {
   background: #334155;
   color: #7dd3fc;
   border: none;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  border-radius: .5rem;
+  padding: .6rem 1.2rem;
   margin-top: 1rem;
   cursor: pointer;
 }
 .btn:hover { background: #475569; }
-.option {
-  background: #0b1220;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  margin: 0.25rem 0;
-  cursor: pointer;
-}
-.option.selected { border: 1px solid #7dd3fc; }
 .progress {
   height: 10px;
   background: #1e3a8a;
@@ -75,23 +56,45 @@ body {
 }
 .bar {
   height: 100%;
-  background: linear-gradient(90deg, #7dd3fc, #c084fc);
+  background: linear-gradient(90deg,#7dd3fc,#c084fc);
   width: 0%;
-  transition: width 0.3s ease;
+  transition: width .3s ease;
 }
 .meta { color: #9aa8bf; margin-top: 8px; }
-#explainBox { margin-top: 1rem; display: none; color: #dff3ff; }
-.sidebar h3 { margin-bottom: 0.5rem; color: #7dd3fc; }
-.sidebar small { color: #9aa8bf; }
+#explainBox { margin-top:1rem; display:none; color:#dff3ff; }
+#sidebar {
+  margin-top: 1.5rem;
+  background: #0f1724;
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+#sidebar h3 { color:#7dd3fc; margin-top:0; }
+#toggleSidebar {
+  display:block;
+  margin:1rem auto;
+  background:#334155;
+  color:#7dd3fc;
+  border:none;
+  border-radius:.5rem;
+  padding:.5rem 1rem;
+  cursor:pointer;
+}
+#toggleSidebar:hover { background:#475569; }
+@media (min-width: 768px) {
+  #layout { display:flex; gap:1.5rem; }
+  #quizWrapper { flex:2; }
+  #sidebar { flex:1; max-height:75vh; overflow-y:auto; }
+  #toggleSidebar { display:none; }
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>SAT Vocabulary Quiz</h1>
-  <p>Progress saves automatically in your browser.</p>
-
-  <div class="card" id="quizCard">
-    <div id="definitionBox" style="font-size:18px;font-weight:600;margin-bottom:12px">Loading words...</div>
+<div id="layout">
+  <div id="quizWrapper">
+    <h2>SAT Vocabulary Quiz</h2>
+    <p>Progress saves automatically in your browser.</p>
+    <div id="definitionBox" style="font-size:18px;font-weight:600;margin-bottom:12px">Loading...</div>
     <div id="options"></div>
     <button id="submitBtn" class="btn">Submit</button>
     <button id="nextBtn" class="btn" style="display:none;">Next</button>
@@ -99,15 +102,16 @@ body {
     <div class="progress"><div class="bar" id="progressBar"></div></div>
     <p id="scoreText" class="meta">0 correct out of 1000</p>
   </div>
-</div>
 
-<div class="sidebar">
-  <h3>📘 Previous Word</h3>
-  <div id="previousWord"><small>None yet</small></div>
-  <hr style="margin:1rem 0;border-color:#334155;">
-  <h3>📚 Seen Words</h3>
-  <div id="seenList"></div>
+  <div id="sidebar" style="display:none;">
+    <h3>📘 Previous Word</h3>
+    <div id="previousWord"><small>None yet</small></div>
+    <hr style="margin:1rem 0;border-color:#334155;">
+    <h3>📚 Seen Words</h3>
+    <div id="seenList"></div>
+  </div>
 </div>
+<button id="toggleSidebar">📑 Show Study Sidebar</button>
 
   <script>
     // ✅ Paste your JSON data here (shortened example below)
@@ -1109,105 +1113,82 @@ body {
 
     let masterList = data.words;
     let pool = masterList.slice();
-    let current = null;
-    let lastWord = null;
-    let correctSet = new Set(JSON.parse(localStorage.getItem("satCorrectWords") || "[]"));
+    let current=null,lastWord=null;
+    let correctSet = new Set(JSON.parse(localStorage.getItem("satCorrectWords")||"[]"));
     let seenSet = new Set();
 
-    const definitionBox = document.getElementById("definitionBox");
-    const optionsEl = document.getElementById("options");
-    const submitBtn = document.getElementById("submitBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const explainBox = document.getElementById("explainBox");
-    const scoreText = document.getElementById("scoreText");
-    const progressBar = document.getElementById("progressBar");
-    const previousWordBox = document.getElementById("previousWord");
-    const seenListBox = document.getElementById("seenList");
+    const defBox=document.getElementById("definitionBox"),
+    opts=document.getElementById("options"),
+    subBtn=document.getElementById("submitBtn"),
+    nextBtn=document.getElementById("nextBtn"),
+    expBox=document.getElementById("explainBox"),
+    score=document.getElementById("scoreText"),
+    bar=document.getElementById("progressBar"),
+    prevBox=document.getElementById("previousWord"),
+    seenBox=document.getElementById("seenList"),
+    side=document.getElementById("sidebar"),
+    toggle=document.getElementById("toggleSidebar");
 
-    function updateScore() {
-    scoreText.textContent = `${correctSet.size} correct out of 1000`;
-    const pct = ((correctSet.size / 1000) * 100).toFixed(1);
-    progressBar.style.width = pct + "%";
-    }
-
-    function renderSidebar() {
-    if (lastWord) previousWordBox.innerHTML = `<b>${lastWord.word}</b>: ${lastWord.definition}`;
-    seenListBox.innerHTML = "";
-    seenSet.forEach(w => {
-        const item = masterList.find(e => e.word === w);
-        if (item) seenListBox.innerHTML += `<div><b>${item.word}</b>: ${item.definition}</div>`;
-    });
-    }
-
-    function nextQuestion() {
-    explainBox.style.display = "none";
-    nextBtn.style.display = "none";
-    submitBtn.style.display = "inline-block";
-    optionsEl.innerHTML = "";
-
-    pool = masterList.filter(w => !correctSet.has(w.word));
-    if (pool.length === 0) {
-        definitionBox.textContent = "🎉 All words mastered!";
-        optionsEl.innerHTML = "";
-        return;
-    }
-
-    const idx = Math.floor(Math.random() * pool.length);
-    current = pool.splice(idx, 1)[0];
-    definitionBox.textContent = current.definition;
-
-    const distractors = new Set();
-    while (distractors.size < 3) {
-        const rand = masterList[Math.floor(Math.random() * masterList.length)].word;
-        if (rand !== current.word) distractors.add(rand);
-    }
-
-    const choices = [current.word, ...Array.from(distractors)].sort(() => Math.random() - 0.5);
-    for (const choice of choices) {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.textContent = choice;
-        div.onclick = () => {
-        document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-        div.classList.add("selected");
-        };
-        optionsEl.appendChild(div);
-    }
-    }
-
-    submitBtn.onclick = () => {
-    const sel = document.querySelector(".option.selected");
-    if (!sel) { alert("Choose an option first."); return; }
-    const chosen = sel.textContent.trim();
-    const correct = current.word;
-    const isCorrect = chosen === correct;
-    explainBox.style.display = "block";
-    optionsEl.querySelectorAll(".option").forEach(o => o.style.pointerEvents = "none");
-    seenSet.add(current.word);
-    lastWord = current;
-
-    if (isCorrect) {
-        explainBox.textContent = `✅ Correct — ${current.word}: ${current.definition}`;
-        correctSet.add(current.word);
-        localStorage.setItem("satCorrectWords", JSON.stringify([...correctSet]));
-        updateScore();
-    } else {
-        explainBox.innerHTML = `❌ Incorrect — Correct: <b>${current.word}</b><br><br><b>Definitions:</b><br>`;
-        document.querySelectorAll(".option").forEach(opt => {
-        const w = masterList.find(e => e.word === opt.textContent);
-        if (w) explainBox.innerHTML += `<div><b>${w.word}</b>: ${w.definition}</div>`;
-        });
-    }
-
-    renderSidebar();
-    nextBtn.style.display = "inline-block";
-    submitBtn.style.display = "none";
+    toggle.onclick=()=>{
+      side.style.display = side.style.display==="none"?"block":"none";
+      toggle.textContent = side.style.display==="none"?"📑 Show Study Sidebar":"❌ Hide Sidebar";
     };
 
-    nextBtn.onclick = () => nextQuestion();
-
-    updateScore();
-    nextQuestion();
+    function updateScore(){
+      score.textContent=`${correctSet.size} correct out of 1000`;
+      bar.style.width=((correctSet.size/1000)*100).toFixed(1)+"%";
+    }
+    function renderSidebar(){
+      if(lastWord) prevBox.innerHTML=`<b>${lastWord.word}</b>: ${lastWord.definition}`;
+      seenBox.innerHTML="";
+      seenSet.forEach(w=>{
+        const item=masterList.find(e=>e.word===w);
+        if(item) seenBox.innerHTML+=`<div><b>${item.word}</b>: ${item.definition}</div>`;
+      });
+    }
+    function nextQuestion(){
+      expBox.style.display="none"; nextBtn.style.display="none"; subBtn.style.display="inline-block";
+      opts.innerHTML="";
+      pool = masterList.filter(w=>!correctSet.has(w.word));
+      if(pool.length===0){ defBox.textContent="🎉 All words mastered!"; return; }
+      current = pool[Math.floor(Math.random()*pool.length)];
+      defBox.textContent=current.definition;
+      const distractors=new Set();
+      while(distractors.size<3){
+        const rand=masterList[Math.floor(Math.random()*masterList.length)].word;
+        if(rand!==current.word) distractors.add(rand);
+      }
+      const choices=[current.word,...Array.from(distractors)].sort(()=>Math.random()-.5);
+      for(const c of choices){
+        const div=document.createElement("div");
+        div.className="option"; div.textContent=c;
+        div.onclick=()=>{document.querySelectorAll(".option").forEach(o=>o.classList.remove("selected"));div.classList.add("selected");};
+        opts.appendChild(div);
+      }
+    }
+    subBtn.onclick=()=>{
+      const sel=document.querySelector(".option.selected");
+      if(!sel){alert("Choose an option first.");return;}
+      const chosen=sel.textContent.trim(),correct=current.word,isCorrect=chosen===correct;
+      expBox.style.display="block";
+      opts.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
+      seenSet.add(current.word); lastWord=current;
+      if(isCorrect){
+        expBox.textContent=`✅ Correct — ${current.word}: ${current.definition}`;
+        correctSet.add(current.word);
+        localStorage.setItem("satCorrectWords",JSON.stringify([...correctSet]));
+        updateScore();
+      } else {
+        expBox.innerHTML=`❌ Incorrect — Correct: <b>${current.word}</b><br><br><b>Definitions:</b><br>`;
+        document.querySelectorAll(".option").forEach(opt=>{
+          const w=masterList.find(e=>e.word===opt.textContent);
+          if(w) expBox.innerHTML+=`<div><b>${w.word}</b>: ${w.definition}</div>`;
+        });
+      }
+      renderSidebar(); nextBtn.style.display="inline-block"; subBtn.style.display="none";
+    };
+    nextBtn.onclick=()=>nextQuestion();
+    updateScore(); nextQuestion();
     </script>
     </body>
     </html>
