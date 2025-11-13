@@ -14,120 +14,103 @@ author: Anwita Bandaru
 
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SAT Vocabulary Quiz — 1000 Words</title>
-  <style>
-    body {
-      font-family: Inter, ui-sans-serif;
-      background: #0f1724;
-      color: #e2e8f0;
-      padding: 2rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 2rem;
-    }
-    .container {
-      max-width: 640px;
-      flex: 2;
-    }
-    .sidebar {
-      flex: 1;
-      background: #1e293b;
-      padding: 1rem;
-      border-radius: 1rem;
-      height: fit-content;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    }
-    .card {
-      background: #1e293b;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      margin-top: 1rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    }
-    .btn {
-      background: #334155;
-      color: #7dd3fc;
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.6rem 1.2rem;
-      margin-top: 1rem;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #475569;
-    }
-    .option {
-      background: #0b1220;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      margin: 0.25rem 0;
-      cursor: pointer;
-    }
-    .option.selected {
-      border: 1px solid #7dd3fc;
-    }
-    .progress {
-      height: 10px;
-      background: #1e3a8a;
-      border-radius: 6px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-    .bar {
-      height: 100%;
-      background: linear-gradient(90deg, #7dd3fc, #c084fc);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    .meta {
-      color: #9aa8bf;
-      margin-top: 8px;
-    }
-    #explainBox {
-      margin-top: 1rem;
-      display: none;
-      color: #dff3ff;
-    }
-    .sidebar h3 {
-      margin-bottom: 0.5rem;
-      color: #7dd3fc;
-    }
-    .sidebar small {
-      color: #9aa8bf;
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+body {
+  font-family: Inter, ui-sans-serif;
+  background: #0f1724;
+  color: #e2e8f0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+}
+.container {
+  max-width: 640px;
+  flex: 2;
+}
+.sidebar {
+  flex: 1;
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 1rem;
+  height: fit-content;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+.card {
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+.btn {
+  background: #334155;
+  color: #7dd3fc;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.btn:hover { background: #475569; }
+.option {
+  background: #0b1220;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin: 0.25rem 0;
+  cursor: pointer;
+}
+.option.selected { border: 1px solid #7dd3fc; }
+.progress {
+  height: 10px;
+  background: #1e3a8a;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, #7dd3fc, #c084fc);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+.meta { color: #9aa8bf; margin-top: 8px; }
+#explainBox { margin-top: 1rem; display: none; color: #dff3ff; }
+.sidebar h3 { margin-bottom: 0.5rem; color: #7dd3fc; }
+.sidebar small { color: #9aa8bf; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>SAT Vocabulary Quiz — 1000 Words</h1>
-    <p>Test your SAT vocabulary knowledge! Progress saves automatically.</p>
+<div class="container">
+  <h1>SAT Vocabulary Quiz</h1>
+  <p>Progress saves automatically in your browser.</p>
 
-    <div class="card" id="quizCard">
-      <div id="definitionBox" style="font-size:18px;font-weight:600;margin-bottom:12px">Loading words...</div>
-      <div id="options"></div>
-      <button id="submitBtn" class="btn">Submit</button>
-      <button id="nextBtn" class="btn" style="display:none;">Next</button>
-      <div id="explainBox"></div>
-      <div class="progress"><div class="bar" id="progressBar"></div></div>
-      <p id="scoreText" class="meta">0 correct out of 1000</p>
-    </div>
+  <div class="card" id="quizCard">
+    <div id="definitionBox" style="font-size:18px;font-weight:600;margin-bottom:12px">Loading words...</div>
+    <div id="options"></div>
+    <button id="submitBtn" class="btn">Submit</button>
+    <button id="nextBtn" class="btn" style="display:none;">Next</button>
+    <div id="explainBox"></div>
+    <div class="progress"><div class="bar" id="progressBar"></div></div>
+    <p id="scoreText" class="meta">0 correct out of 1000</p>
   </div>
+</div>
 
-  <div class="sidebar">
-    <h3>📘 Previous Word</h3>
-    <div id="previousWord"><small>None yet</small></div>
-    <hr style="margin: 1rem 0; border-color: #334155;" />
-    <h3>📚 Seen Words</h3>
-    <div id="seenList"></div>
-  </div>
+<div class="sidebar">
+  <h3>📘 Previous Word</h3>
+  <div id="previousWord"><small>None yet</small></div>
+  <hr style="margin:1rem 0;border-color:#334155;">
+  <h3>📚 Seen Words</h3>
+  <div id="seenList"></div>
+</div>
 
   <script>
-    // ✅ Replace this data array with your full 1000-word JSON list
+    // ✅ Paste your JSON data here (shortened example below)
     const data = {
       "words": [
         {"word": "abase", "definition": "to humiliate, degrade"},
@@ -1142,101 +1125,91 @@ author: Anwita Bandaru
     const seenListBox = document.getElementById("seenList");
 
     function updateScore() {
-      scoreText.textContent = `${correctSet.size} correct out of 1000`;
-      const pct = ((correctSet.size / 1000) * 100).toFixed(1);
-      progressBar.style.width = pct + "%";
+    scoreText.textContent = `${correctSet.size} correct out of 1000`;
+    const pct = ((correctSet.size / 1000) * 100).toFixed(1);
+    progressBar.style.width = pct + "%";
     }
 
     function renderSidebar() {
-      // Previous word
-      if (lastWord) {
-        previousWordBox.innerHTML = `<b>${lastWord.word}</b>: ${lastWord.definition}`;
-      }
-      // Seen words list
-      seenListBox.innerHTML = "";
-      seenSet.forEach(w => {
+    if (lastWord) previousWordBox.innerHTML = `<b>${lastWord.word}</b>: ${lastWord.definition}`;
+    seenListBox.innerHTML = "";
+    seenSet.forEach(w => {
         const item = masterList.find(e => e.word === w);
         if (item) seenListBox.innerHTML += `<div><b>${item.word}</b>: ${item.definition}</div>`;
-      });
+    });
     }
 
     function nextQuestion() {
-      explainBox.style.display = "none";
-      nextBtn.style.display = "none";
-      submitBtn.style.display = "inline-block";
-      optionsEl.innerHTML = "";
+    explainBox.style.display = "none";
+    nextBtn.style.display = "none";
+    submitBtn.style.display = "inline-block";
+    optionsEl.innerHTML = "";
 
-      if (pool.length === 0) {
-        pool = masterList.filter(w => !correctSet.has(w.word)); // only new or wrong ones
-        if (pool.length === 0) {
-          definitionBox.textContent = "🎉 All words mastered!";
-          return;
-        }
-      }
+    pool = masterList.filter(w => !correctSet.has(w.word));
+    if (pool.length === 0) {
+        definitionBox.textContent = "🎉 All words mastered!";
+        optionsEl.innerHTML = "";
+        return;
+    }
 
-      const idx = Math.floor(Math.random() * pool.length);
-      current = pool.splice(idx, 1)[0];
-      definitionBox.textContent = current.definition;
+    const idx = Math.floor(Math.random() * pool.length);
+    current = pool.splice(idx, 1)[0];
+    definitionBox.textContent = current.definition;
 
-      const distractors = new Set();
-      while (distractors.size < 3) {
+    const distractors = new Set();
+    while (distractors.size < 3) {
         const rand = masterList[Math.floor(Math.random() * masterList.length)].word;
         if (rand !== current.word) distractors.add(rand);
-      }
+    }
 
-      const choices = [current.word, ...Array.from(distractors)].sort(() => Math.random() - 0.5);
-      for (const choice of choices) {
+    const choices = [current.word, ...Array.from(distractors)].sort(() => Math.random() - 0.5);
+    for (const choice of choices) {
         const div = document.createElement("div");
         div.className = "option";
         div.textContent = choice;
         div.onclick = () => {
-          document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-          div.classList.add("selected");
+        document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+        div.classList.add("selected");
         };
         optionsEl.appendChild(div);
-      }
+    }
     }
 
     submitBtn.onclick = () => {
-      const sel = document.querySelector(".option.selected");
-      if (!sel) {
-        alert("Choose an option first.");
-        return;
-      }
-      const chosen = sel.textContent.trim();
-      const correct = current.word;
-      const isCorrect = chosen === correct;
-      explainBox.style.display = "block";
-      optionsEl.querySelectorAll(".option").forEach(o => o.style.pointerEvents = "none");
+    const sel = document.querySelector(".option.selected");
+    if (!sel) { alert("Choose an option first."); return; }
+    const chosen = sel.textContent.trim();
+    const correct = current.word;
+    const isCorrect = chosen === correct;
+    explainBox.style.display = "block";
+    optionsEl.querySelectorAll(".option").forEach(o => o.style.pointerEvents = "none");
+    seenSet.add(current.word);
+    lastWord = current;
 
-      seenSet.add(current.word);
-      lastWord = current;
-
-      if (isCorrect) {
+    if (isCorrect) {
         explainBox.textContent = `✅ Correct — ${current.word}: ${current.definition}`;
         correctSet.add(current.word);
         localStorage.setItem("satCorrectWords", JSON.stringify([...correctSet]));
         updateScore();
-      } else {
+    } else {
         explainBox.innerHTML = `❌ Incorrect — Correct: <b>${current.word}</b><br><br><b>Definitions:</b><br>`;
         document.querySelectorAll(".option").forEach(opt => {
-          const w = masterList.find(e => e.word === opt.textContent);
-          if (w) explainBox.innerHTML += `<div><b>${w.word}</b>: ${w.definition}</div>`;
+        const w = masterList.find(e => e.word === opt.textContent);
+        if (w) explainBox.innerHTML += `<div><b>${w.word}</b>: ${w.definition}</div>`;
         });
-        pool.push(current); // re-add if wrong
-      }
-      renderSidebar();
-      nextBtn.style.display = "inline-block";
-      submitBtn.style.display = "none";
+    }
+
+    renderSidebar();
+    nextBtn.style.display = "inline-block";
+    submitBtn.style.display = "none";
     };
 
     nextBtn.onclick = () => nextQuestion();
 
     updateScore();
     nextQuestion();
-  </script>
-</body>
-</html>
+    </script>
+    </body>
+    </html>
 
-</div>
-
+    </div>
