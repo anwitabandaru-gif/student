@@ -8,8 +8,6 @@ author: Anwita Bandaru
 
 ## SAT Vocabulary Quiz: 1000 Words
 
-> Test your SAT vocabulary knowledge. Your progress will automatically save in your browser’s local storage.
-
 <div id="sat-quiz" style="max-width:1000px;margin:auto;">
 
 <html>
