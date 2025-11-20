@@ -1,8 +1,7 @@
 ---
-title: Scarlett Letter Vocab Word Practice
+title: Military Test
 layout: post
-permalink: /slvocab
-description: Study chapter vocabulary for the Scarlett Letter chapter tests
+permalink: /mltest
 author: Anwita Bandaru
 ---
 
