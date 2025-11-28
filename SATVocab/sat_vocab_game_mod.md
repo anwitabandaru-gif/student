@@ -94,6 +94,7 @@ body, #sat-quiz {
     <div id="options"></div>
     <button id="submitBtn" class="btn">Submit</button>
     <button id="nextBtn" class="btn" style="display:none;">Next</button>
+    <button id="resetBtn" class="btn" style="display:inline-block;">Reset</button>
     <div id="explainBox"></div>
     <div class="progress"><div class="bar" id="progressBar"></div></div>
     <p id="scoreText" class="meta">0 correct out of 1000</p>
@@ -1180,6 +1181,14 @@ subBtn.onclick=()=>{
   subBtn.style.display="none";
 };
 nextBtn.onclick=()=>nextQuestion();
+document.getElementById("resetBtn").onclick=()=>{
+  if(confirm("Are you sure you want to reset all progress?")){
+    correctSet.clear();
+    localStorage.removeItem("satCorrectWords");
+    updateScore();
+    nextQuestion();
+  }
+};
 updateScore();nextQuestion();
 </script>
 </body>
