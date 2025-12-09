@@ -133,6 +133,12 @@ body, #sl-quiz {
     <div class="chapter-box">
       <h3>Select Chapters</h3>
       <div class="chapter-row" id="chapterSelect"></div>
+      <div style="margin-top: 1rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #2d2a26; font-weight: 600;">
+          <input type="checkbox" id="requiredOnly" style="width: auto;">
+          Required Words Only
+        </label>
+      </div>
       <button class="btn" id="startBtn">Start Quiz</button>
     </div>
 
@@ -148,6 +154,7 @@ body, #sl-quiz {
 
     <div class="progress"><div class="bar" id="progressBar"></div></div>
     <p id="scoreText" class="meta">0 correct</p>
+    
   </div>
 
   <!-- Sidebar -->
@@ -1584,8 +1591,22 @@ startBtn.onclick = () => {
     return;
   }
 
+  const requiredOnly = document.getElementById("requiredOnly").checked;
+
   studyWords = [];
-  selected.forEach(ch => studyWords.push(...data.chapters[ch]));
+  selected.forEach(ch => {
+    const chapterWords = data.chapters[ch];
+    if (requiredOnly) {
+      studyWords.push(...chapterWords.filter(w => w.required === true));
+    } else {
+      studyWords.push(...chapterWords);
+    }
+  });
+
+  if (studyWords.length === 0) {
+    alert("No words found with the current filter. Try unchecking 'Required Words Only'.");
+    return;
+  }
 
   pool = studyWords.slice();
   correctSet.clear();
