@@ -770,6 +770,8 @@ document.querySelectorAll('.bin').forEach(bin => {
         db.session.add(self)
         db.session.commit()
         return self</code></pre>
+            <h3>Backend Overview</h3>
+            <p>The backend API handles score submissions and leaderboard retrieval using Flask and SQLAlchemy. Scores are stored in a relational database with fields for username, time, and timestamp. The API provides endpoints to submit new scores and fetch the top rankings efficiently.</p>
         </div>
 
         <div class="section" id="alignment">
