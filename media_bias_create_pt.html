@@ -1,0 +1,953 @@
+---
+permalink: /writeup
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Bias Game - Create PT Writeup</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4338ca;
+            --primary-light: #818cf8;
+            --accent: #ec4899;
+            --bg-dark: #0f172a;
+            --bg-medium: #1e293b;
+            --bg-light: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #475569;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 0;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease 0.2s backwards;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            white-space: nowrap;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .nav-tab:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            color: var(--primary-light);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease backwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+        }
+
+        pre {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        pre::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        code {
+            color: var(--primary-light);
+        }
+
+        .inline-code {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .badge-primary {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+            border: 1px solid var(--primary);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .badge-accent {
+            background: rgba(236, 72, 153, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .info-box {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+        }
+
+        .info-box strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .checklist li::before {
+            content: 'CHECK';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+
+        .quick-ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .quick-ref-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-ref-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .quick-ref-item strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quick-ref-item code {
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+            .nav-tabs { flex-direction: column; }
+            .section { padding: 1.5rem; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-medium);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .highlight-row {
+            background: rgba(236, 72, 153, 0.05);
+        }
+
+        .star-marker {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Media Bias Game</h1>
+            <p class="subtitle">Create Performance Task Reference Guide</p>
+            <div class="tech-stack">
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">Python/Flask</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">REST API</span>
+            </div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="scrollToSection('input')">INPUT</button>
+            <button class="nav-tab" onclick="scrollToSection('output')">OUTPUT</button>
+            <button class="nav-tab" onclick="scrollToSection('list')">LIST</button>
+            <button class="nav-tab" onclick="scrollToSection('procedure')">PROCEDURE</button>
+            <button class="nav-tab" onclick="scrollToSection('algorithm')">ALGORITHM</button>
+            <button class="nav-tab" onclick="scrollToSection('backend')">BACKEND</button>
+            <button class="nav-tab" onclick="scrollToSection('alignment')">CB ALIGNMENT</button>
+            <button class="nav-tab" onclick="scrollToSection('reference')">QUICK REF</button>
+        </div>
+
+        <div class="section" id="input">
+            <h2><span class="section-number">1</span> INPUT</h2>
+            
+            <h3>Drag and Drop Interaction</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 350
+            </div>
+            <pre data-lang="javascript"><code>img.addEventListener('dragstart', (e) => {
+    if (!gameStarted) {
+        gameStarted = true;
+        timerHandle = startTimer();
+    }
+    e.dataTransfer.setData('text/plain', e.target.dataset.id);
+});</code></pre>
+            <p><strong>Captures:</strong> Image ID, drag event, starts timer on first interaction</p>
+
+            <h3>Submit Button</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 623
+            </div>
+            <pre data-lang="javascript"><code>submitBtn.addEventListener('click', () => {
+    const totalImages = document.querySelectorAll('.image').length;
+    const placedCount = placedImages.size;
+    // Validates completion and correctness
+});</code></pre>
+            <p><strong>Captures:</strong> User completion signal, triggers validation</p>
+        </div>
+
+        <div class="section" id="output">
+            <h2><span class="section-number">2</span> OUTPUT</h2>
+            
+            <h3>Incorrect Feedback Modal</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 505
+            </div>
+            <pre data-lang="javascript"><code>function showIncorrectFeedback(incorrectImages) {
+    const imageGrid = incorrectImages.map(img => 
+        `&lt;div&gt;
+            &lt;img src="${img.src}"&gt;
+            &lt;div&gt;${img.name}&lt;/div&gt;
+            &lt;div&gt;Currently in: ${img.currentBin}&lt;/div&gt;
+        &lt;/div&gt;`
+    ).join('');
+}</code></pre>
+            <p><strong>Displays:</strong> Which outlets are wrong, their current location, visual feedback</p>
+
+            <h3>Leaderboard Display</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 475
+            </div>
+            <pre data-lang="javascript"><code>async function fetchLeaderboard() {
+    const response = await fetch(pythonURI + '/api/media/leaderboard?limit=5');
+    const data = await response.json();
+    data.forEach((entry, index) => {
+        // Display rank, username, time
+    });
+}</code></pre>
+            <p><strong>Displays:</strong> Rankings, usernames, completion times</p>
+        </div>
+
+        <div class="section" id="list">
+            <h2><span class="section-number">3</span> LIST (Row 2 Data Abstraction)</h2>
+            
+            <h3>Master List</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 178
+            </div>
+            <pre data-lang="javascript"><code>const imageFiles = [
+    { src: "atlanticL.png", company: "Atlantic", bin: "Left" },
+    { src: "buzzfeedL.png", company: "Buzzfeed", bin: "Left" },
+    { src: "cnnL.png", company: "CNN", bin: "Left" },
+    // ... 27 more entries (30 total)
+];</code></pre>
+
+            <h3>Selected Images List <span class="star-marker">ROW 2</span></h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 330<br>
+                <strong>This is your Row 2 list</strong>
+            </div>
+            <pre data-lang="javascript"><code>const getRandomSubset = (arr, count) => {
+    return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
+};
+
+selectedImages = [
+    ...getRandomSubset(leftImages, 7),
+    ...getRandomSubset(centerImages, 7),
+    ...getRandomSubset(rightImages, 7)
+].sort(() => 0.5 - Math.random());</code></pre>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Purpose</strong></td>
+                            <td>Stores 21 randomly selected images for current game</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Operations</strong></td>
+                            <td>Filter by category, random selection, concatenation, shuffle</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Why List Necessary</strong></td>
+                            <td>Cannot use 21+ individual variables; needs iteration, filtering, random selection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Incorrect Images List</h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 630
+            </div>
+            <pre data-lang="javascript"><code>let incorrectImages = [];
+document.querySelectorAll('.bin').forEach(bin => {
+    bin.querySelectorAll('.image').forEach(img => {
+        if (img.dataset.bin !== bin.dataset.bin) {
+            incorrectImages.push({
+                name: img.dataset.company,
+                currentBin: bin.dataset.bin,
+                src: img.src
+            });
+        }
+    });
+});</code></pre>
+            <p><strong>Purpose:</strong> Collects misplaced items for feedback display</p>
+        </div>
+
+        <div class="section" id="procedure">
+            <h2><span class="section-number">4</span> PROCEDURE (Row 3 Procedural Abstraction)</h2>
+            
+            <h3>initGame() <span class="star-marker">ROW 3</span></h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 318<br>
+                <strong>This is your Row 3 procedure</strong>
+            </div>
+            <pre data-lang="javascript"><code>function initGame() {
+    // Clear existing game
+    imagesArea.innerHTML = '';
+    placedImages.clear();
+    gameStarted = false;
+    
+    // Load or create random selection
+    const data = loadData();
+    let selectedImages = null;
+    
+    if (data.meta.roundImages && data.meta.roundImages.length === 21) {
+        selectedImages = mapIdsToFiles(data.meta.roundImages);
+    }
+    
+    if (!selectedImages) {
+        selectedImages = [
+            ...getRandomSubset(leftImages, 7),
+            ...getRandomSubset(centerImages, 7),
+            ...getRandomSubset(rightImages, 7)
+        ].sort(() => 0.5 - Math.random());
+        
+        data.meta.roundImages = selectedImages.map(f => slugify(f.company));
+        saveData(data);
+    }
+    
+    // Create image cards and restore placements
+    selectedImages.forEach(file => {
+        const card = createImageCard(file);
+        imagesArea.appendChild(card);
+    });
+}</code></pre>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Parameters</strong></td>
+                            <td>None (uses global state)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Called By</strong></td>
+                            <td>window.onload, Reset button, Submit handler</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Advantage</strong></td>
+                            <td>Prevents duplicating 60+ lines in 3 different places</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section" id="algorithm">
+            <h2><span class="section-number">5</span> ALGORITHM (Row 4 Algorithm Implementation)</h2>
+            
+            <h3>Validation Algorithm <span class="star-marker">ROW 4</span></h3>
+            <div class="info-box">
+                <strong>Location:</strong> Mediachat.md, line 623<br>
+                <strong>This is your Row 4 algorithm</strong>
+            </div>
+            <pre data-lang="javascript"><code>submitBtn.addEventListener('click', () => {
+    // STEP 1: Check completion
+    const totalImages = document.querySelectorAll('.image').length;
+    const placedCount = placedImages.size;
+    
+    if (placedCount &lt; totalImages) {
+        alert(`Haven't placed all images!`);
+        return;  // SELECTION: early exit
+    }
+
+    // STEP 2: Validate correctness
+    let incorrectImages = [];
+    document.querySelectorAll('.bin').forEach(bin => {  // ITERATION
+        bin.querySelectorAll('.image').forEach(img => {  // NESTED ITERATION
+            if (img.dataset.bin !== bin.dataset.bin) {  // SELECTION
+                incorrectImages.push({
+                    name: img.dataset.company,
+                    currentBin: bin.dataset.bin,
+                    src: img.src
+                });
+            }
+        });
+    });
+
+    // STEP 3: Handle incorrect placements
+    if (incorrectImages.length > 0) {  // SELECTION
+        showIncorrectFeedback(incorrectImages);
+        return;
+    }
+
+    // STEP 4: Success (record score)
+    if (timerHandle) {  // SELECTION
+        const elapsed = timerHandle.stop();
+        submitFinalTime(username, elapsed);
+        showCongrats();
+        initGame();
+    }
+});</code></pre>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-primary">Sequencing</span></td>
+                            <td>Steps 1, 2, 3, 4 executed in order</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-warning">Selection</span></td>
+                            <td>4 if statements determine execution path</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-accent">Iteration</span></td>
+                            <td>2 nested forEach loops process all placements</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section" id="backend">
+            <h2><span class="section-number">6</span> BACKEND API</h2>
+            
+            <h3>Score Submission</h3>
+            <div class="info-box">
+                <strong>Location:</strong> media_api.py, line 91
+            </div>
+            <pre data-lang="python"><code>class MediaScoreAPI(Resource):
+    def post(self, username=None, time=None):
+        # Accept path params OR JSON body
+        if username and time:
+            time = int(time)
+        else:
+            body = request.get_json()
+            username = body.get('username')
+            time = int(body.get('time'))
+        
+        # Save to database
+        score = MediaScore(username=username, time=time)
+        created_score = score.create()
+        
+        return created_score.read(), 201</code></pre>
+
+            <h3>Leaderboard</h3>
+            <div class="info-box">
+                <strong>Location:</strong> media_api.py, line 140
+            </div>
+            <pre data-lang="python"><code>class MediaLeaderboardAPI(Resource):
+    def get(self):
+        # Get best time per user using SQL
+        subquery = db.session.query(
+            MediaScore.username,
+            func.min(MediaScore.time).label('best_time')
+        ).group_by(MediaScore.username).subquery()
+        
+        scores = db.session.query(MediaScore).join(
+            subquery,
+            db.and_(
+                MediaScore.username == subquery.c.username,
+                MediaScore.time == subquery.c.best_time
+            )
+        ).order_by(MediaScore.time.asc()).limit(limit).all()
+        
+        # Add ranks
+        leaderboard = []
+        for rank, score in enumerate(scores, start=1):
+            entry = score.read()
+            entry['rank'] = rank
+            leaderboard.append(entry)
+        
+        return leaderboard, 200</code></pre>
+
+            <h3>Database Model</h3>
+            <div class="info-box">
+                <strong>Location:</strong> media_api.py, line 17
+            </div>
+            <pre data-lang="python"><code>class MediaScore(db.Model):
+    __tablename__ = 'media_scores'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
+    time = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def create(self):
+        db.session.add(self)
+        db.session.commit()
+        return self</code></pre>
+        </div>
+
+        <div class="section" id="alignment">
+            <h2><span class="section-number">7</span> COLLEGE BOARD ALIGNMENT</h2>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Requirement</th>
+                            <th>Implementation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td><strong>Row 1</strong></td>
+                            <td>Program Purpose and Function</td>
+                            <td>
+                                <strong>Purpose:</strong> Teach media bias identification<br>
+                                <strong>Input:</strong> Drag and drop, authentication<br>
+                                <strong>Output:</strong> Feedback modals, leaderboard, timer<br>
+                                <strong>Functionality:</strong> Sort 21 outlets, get validation, compete on timed leaderboard
+                            </td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Row 2</strong></td>
+                            <td>Data Abstraction</td>
+                            <td>
+                                <strong>List Name:</strong> selectedImages<br>
+                                <strong>Stores:</strong> 21 randomly selected media outlet objects<br>
+                                <strong>Used For:</strong> Game initialization, display, validation<br>
+                                <strong>Why Necessary:</strong> Cannot use 21+ variables; needs iteration, filtering, random selection
+                            </td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Row 3</strong></td>
+                            <td>Procedural Abstraction</td>
+                            <td>
+                                <strong>Procedure:</strong> initGame()<br>
+                                <strong>Parameters:</strong> None<br>
+                                <strong>Called:</strong> Page load, reset, after completion<br>
+                                <strong>Advantage:</strong> Prevents duplicating 60+ lines in 3 places
+                            </td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Row 4</strong></td>
+                            <td>Algorithm</td>
+                            <td>
+                                <strong>Algorithm:</strong> Submit validation<br>
+                                <strong>Includes:</strong> Sequencing (4 steps), selection (4 if statements), iteration (2 nested loops)<br>
+                                <strong>Purpose:</strong> Verify completion and correctness before recording score
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>No Hard Coded Data</h3>
+            <ul class="checklist">
+                <li>Image list could load from JSON/API</li>
+                <li>Game state in localStorage (dynamic)</li>
+                <li>Leaderboard from database (no preset winners)</li>
+                <li>Users from database (no hard coded accounts)</li>
+            </ul>
+        </div>
+
+        <div class="section" id="reference">
+            <h2><span class="section-number">8</span> QUICK REFERENCE</h2>
+            
+            <div class="quick-ref-grid">
+                <div class="quick-ref-item">
+                    <strong>Input</strong>
+                    <p>Lines 350 (drag), 623 (submit)</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Output</strong>
+                    <p>Lines 505 (feedback), 475 (leaderboard)</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>List</strong>
+                    <p>Lines 178 (master), 330 (selected), 630 (incorrect)</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Procedure</strong>
+                    <p>Line 318 (initGame)</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Algorithm</strong>
+                    <p>Line 623 (validation)</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Backend</strong>
+                    <p>media_api.py lines 17, 91, 140</p>
+                </div>
+            </div>
+
+            <h3>Video Checklist</h3>
+            <ul class="checklist">
+                <li>Show drag and drop input</li>
+                <li>Show incorrect feedback output (trigger error)</li>
+                <li>Show successful completion output (leaderboard update)</li>
+                <li>Mention selectedImages list usage</li>
+                <li>Call initGame() via reset button</li>
+                <li>Demonstrate validation algorithm (show both paths)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        document.querySelectorAll('.nav-tab').forEach(tab => {
+                            tab.classList.remove('active');
+                            if (tab.textContent.toLowerCase().includes(id)) {
+                                tab.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
