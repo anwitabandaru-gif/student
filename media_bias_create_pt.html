@@ -448,12 +448,6 @@ permalink: /writeup
         <header>
             <h1>Media Bias Game</h1>
             <p class="subtitle">Create Performance Task Reference Guide</p>
-            <div class="tech-stack">
-                <span class="tech-badge">JavaScript</span>
-                <span class="tech-badge">Python/Flask</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">REST API</span>
-            </div>
         </header>
 
         <div class="nav-tabs">
@@ -464,16 +458,12 @@ permalink: /writeup
             <button class="nav-tab" onclick="scrollToSection('algorithm')">ALGORITHM</button>
             <button class="nav-tab" onclick="scrollToSection('backend')">BACKEND</button>
             <button class="nav-tab" onclick="scrollToSection('alignment')">CB ALIGNMENT</button>
-            <button class="nav-tab" onclick="scrollToSection('reference')">QUICK REF</button>
         </div>
 
         <div class="section" id="input">
             <h2><span class="section-number">1</span> INPUT</h2>
             
             <h3>Drag and Drop Interaction</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 350
-            </div>
             <pre data-lang="javascript"><code>img.addEventListener('dragstart', (e) => {
     if (!gameStarted) {
         gameStarted = true;
@@ -484,9 +474,6 @@ permalink: /writeup
             <p><strong>Captures:</strong> Image ID, drag event, starts timer on first interaction</p>
 
             <h3>Submit Button</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 623
-            </div>
             <pre data-lang="javascript"><code>submitBtn.addEventListener('click', () => {
     const totalImages = document.querySelectorAll('.image').length;
     const placedCount = placedImages.size;
@@ -499,9 +486,6 @@ permalink: /writeup
             <h2><span class="section-number">2</span> OUTPUT</h2>
             
             <h3>Incorrect Feedback Modal</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 505
-            </div>
             <pre data-lang="javascript"><code>function showIncorrectFeedback(incorrectImages) {
     const imageGrid = incorrectImages.map(img => 
         `&lt;div&gt;
@@ -514,9 +498,6 @@ permalink: /writeup
             <p><strong>Displays:</strong> Which outlets are wrong, their current location, visual feedback</p>
 
             <h3>Leaderboard Display</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 475
-            </div>
             <pre data-lang="javascript"><code>async function fetchLeaderboard() {
     const response = await fetch(pythonURI + '/api/media/leaderboard?limit=5');
     const data = await response.json();
@@ -531,9 +512,6 @@ permalink: /writeup
             <h2><span class="section-number">3</span> LIST (Row 2 Data Abstraction)</h2>
             
             <h3>Master List</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 178
-            </div>
             <pre data-lang="javascript"><code>const imageFiles = [
     { src: "atlanticL.png", company: "Atlantic", bin: "Left" },
     { src: "buzzfeedL.png", company: "Buzzfeed", bin: "Left" },
@@ -543,8 +521,7 @@ permalink: /writeup
 
             <h3>Selected Images List <span class="star-marker">ROW 2</span></h3>
             <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 330<br>
-                <strong>This is your Row 2 list</strong>
+                <strong>This is my Row 2 list</strong>
             </div>
             <pre data-lang="javascript"><code>const getRandomSubset = (arr, count) => {
     return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
@@ -582,9 +559,6 @@ selectedImages = [
             </div>
 
             <h3>Incorrect Images List</h3>
-            <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 630
-            </div>
             <pre data-lang="javascript"><code>let incorrectImages = [];
 document.querySelectorAll('.bin').forEach(bin => {
     bin.querySelectorAll('.image').forEach(img => {
@@ -605,8 +579,7 @@ document.querySelectorAll('.bin').forEach(bin => {
             
             <h3>initGame() <span class="star-marker">ROW 3</span></h3>
             <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 318<br>
-                <strong>This is your Row 3 procedure</strong>
+                <strong>This is my Row 3 procedure</strong>
             </div>
             <pre data-lang="javascript"><code>function initGame() {
     // Clear existing game
@@ -671,8 +644,7 @@ document.querySelectorAll('.bin').forEach(bin => {
             
             <h3>Validation Algorithm <span class="star-marker">ROW 4</span></h3>
             <div class="info-box">
-                <strong>Location:</strong> Mediachat.md, line 623<br>
-                <strong>This is your Row 4 algorithm</strong>
+                <strong>This is my Row 4 algorithm</strong>
             </div>
             <pre data-lang="javascript"><code>submitBtn.addEventListener('click', () => {
     // STEP 1: Check completion
@@ -743,9 +715,6 @@ document.querySelectorAll('.bin').forEach(bin => {
             <h2><span class="section-number">6</span> BACKEND API</h2>
             
             <h3>Score Submission</h3>
-            <div class="info-box">
-                <strong>Location:</strong> media_api.py, line 91
-            </div>
             <pre data-lang="python"><code>class MediaScoreAPI(Resource):
     def post(self, username=None, time=None):
         # Accept path params OR JSON body
@@ -763,9 +732,6 @@ document.querySelectorAll('.bin').forEach(bin => {
         return created_score.read(), 201</code></pre>
 
             <h3>Leaderboard</h3>
-            <div class="info-box">
-                <strong>Location:</strong> media_api.py, line 140
-            </div>
             <pre data-lang="python"><code>class MediaLeaderboardAPI(Resource):
     def get(self):
         # Get best time per user using SQL
@@ -792,9 +758,6 @@ document.querySelectorAll('.bin').forEach(bin => {
         return leaderboard, 200</code></pre>
 
             <h3>Database Model</h3>
-            <div class="info-box">
-                <strong>Location:</strong> media_api.py, line 17
-            </div>
             <pre data-lang="python"><code>class MediaScore(db.Model):
     __tablename__ = 'media_scores'
     
@@ -864,56 +827,7 @@ document.querySelectorAll('.bin').forEach(bin => {
                     </tbody>
                 </table>
             </div>
-
-            <h3>No Hard Coded Data</h3>
-            <ul class="checklist">
-                <li>Image list could load from JSON/API</li>
-                <li>Game state in localStorage (dynamic)</li>
-                <li>Leaderboard from database (no preset winners)</li>
-                <li>Users from database (no hard coded accounts)</li>
-            </ul>
-        </div>
-
-        <div class="section" id="reference">
-            <h2><span class="section-number">8</span> QUICK REFERENCE</h2>
-            
-            <div class="quick-ref-grid">
-                <div class="quick-ref-item">
-                    <strong>Input</strong>
-                    <p>Lines 350 (drag), 623 (submit)</p>
-                </div>
-                <div class="quick-ref-item">
-                    <strong>Output</strong>
-                    <p>Lines 505 (feedback), 475 (leaderboard)</p>
-                </div>
-                <div class="quick-ref-item">
-                    <strong>List</strong>
-                    <p>Lines 178 (master), 330 (selected), 630 (incorrect)</p>
-                </div>
-                <div class="quick-ref-item">
-                    <strong>Procedure</strong>
-                    <p>Line 318 (initGame)</p>
-                </div>
-                <div class="quick-ref-item">
-                    <strong>Algorithm</strong>
-                    <p>Line 623 (validation)</p>
-                </div>
-                <div class="quick-ref-item">
-                    <strong>Backend</strong>
-                    <p>media_api.py lines 17, 91, 140</p>
-                </div>
-            </div>
-
-            <h3>Video Checklist</h3>
-            <ul class="checklist">
-                <li>Show drag and drop input</li>
-                <li>Show incorrect feedback output (trigger error)</li>
-                <li>Show successful completion output (leaderboard update)</li>
-                <li>Mention selectedImages list usage</li>
-                <li>Call initGame() via reset button</li>
-                <li>Demonstrate validation algorithm (show both paths)</li>
-            </ul>
-        </div>
+        </div>  
     </div>
 
     <script>
