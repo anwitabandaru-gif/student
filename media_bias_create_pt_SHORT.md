@@ -1,90 +1,199 @@
-# Create PT Writeup
-
-## 1. INPUT
-
-### Drag-and-Drop (Mediachat.md, line 350)
-```javascript
-img.addEventListener('dragstart', (e) => {
-    if (!gameStarted) {
-        gameStarted = true;
-        timerHandle = startTimer();
-    }
-    e.dataTransfer.setData('text/plain', e.target.dataset.id);
-});
-```
-**Captures:** Image ID, drag event, starts timer on first interaction
-
-### Submit Button (Mediachat.md, line 623)
-```javascript
-submitBtn.addEventListener('click', () => {
-    const totalImages = document.querySelectorAll('.image').length;
-    const placedCount = placedImages.size;
-    // Validates completion and correctness
-});
-```
-**Captures:** User completion signal, triggers validation
+---
+permalink: /write-up/
+---
+# AP Computer Science Principles
+## Create Performance Task: Media Bias Sorting Game
+### Component C: Personalized Project Reference
 
 ---
 
-## 2. OUTPUT
+## Procedure
 
-### Incorrect Feedback Modal (Mediachat.md, line 505)
-```javascript
-function showIncorrectFeedback(incorrectImages) {
-    const imageGrid = incorrectImages.map(img => 
-        `<div>
-            <img src="${img.src}">
-            <div>${img.name}</div>
-            <div>Currently in: ${img.currentBin}</div>
-        </div>`
-    ).join('');
-}
-```
-**Displays:** Which outlets are wrong, their current location, visual feedback
+### i. Student-Developed Procedure
 
-### Leaderboard (Mediachat.md, line 475)
 ```javascript
-async function fetchLeaderboard() {
-    const response = await fetch(pythonURI + '/api/media/leaderboard?limit=5');
-    const data = await response.json();
-    data.forEach((entry, index) => {
-        // Display rank, username, time
+// Student-developed procedure: initGame()
+// Location: mainmodule.md, line 1023
+// This procedure initializes the game state and displays randomly selected images
+
+function initGame() {
+    // SEQUENCING: Clear existing game state
+    imagesArea.innerHTML = '';
+    document.querySelectorAll('.bin-content').forEach(el => el.innerHTML = '');
+    placedImages.clear();
+    gameStarted = false;
+    
+    if (timerHandle) {
+        timerHandle.stop();
+        timerHandle = null;
+    }
+    
+    if (timerDisplay) {
+        timerDisplay.textContent = 'Time: 0:00';
+    }
+
+    const getRandomSubset = (arr, count) => {
+        return [...arr]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, count);
+    };
+
+    const leftImages = imageFiles.filter(img => img.bin === "Left");
+    const centerImages = imageFiles.filter(img => img.bin === "Center");
+    const rightImages = imageFiles.filter(img => img.bin === "Right");
+
+    // ITERATION & SELECTION: Load or create selection
+    const data = loadData();
+    data.meta = data.meta || {};
+    let selectedImages = null;
+    
+    if (Array.isArray(data.meta.roundImages) && 
+        data.meta.roundImages.length === 21) {
+        const idMap = new Map(imageFiles.map(f => 
+            [slugify(f.company), f]));
+        const files = data.meta.roundImages
+            .map(id => idMap.get(id))
+            .filter(Boolean);
+        if (files.length === 21) {
+            selectedImages = files;
+        }
+    }
+
+    // SELECTION: Create new selection if needed
+    if (!selectedImages) {
+        selectedImages = [
+            ...getRandomSubset(leftImages, 7),
+            ...getRandomSubset(centerImages, 7),
+            ...getRandomSubset(rightImages, 7)
+        ].sort(() => 0.5 - Math.random());
+        
+        data.meta.roundImages = selectedImages.map(f => 
+            slugify(f.company));
+        saveData(data);
+    }
+
+    // ITERATION: Create and display image cards
+    selectedImages.forEach((file) => {
+        const card = createImageCard(file);
+        imagesArea.appendChild(card);
+    });
+
+    // ITERATION: Restore saved placements
+    document.querySelectorAll('img.image').forEach(img => {
+        const id = img.dataset.id;
+        const zone = data.gameState && data.gameState[id];
+        if (zone) {
+            const bin = document.querySelector(
+                `.bin[data-bin="${zone}"]`);
+            if (bin) {
+                bin.querySelector('.bin-content')
+                    .appendChild(img);
+                placedImages.add(id);
+            }
+        }
     });
 }
 ```
-**Displays:** Rankings, usernames, completion times
+
+### ii. Procedure Calls
+
+```javascript
+// Called on page load (Mediachat.md, line 800)
+window.onload = () => {
+    console.log("Window fully loaded — starting game");
+    fetchUser();
+    initGame();
+    fetchLeaderboard();
+    setInterval(fetchLeaderboard, 30000);
+};
+
+// Called when user clicks reset button (Mediachat.md, line 680)
+const resetBtn = document.getElementById('reset-btn');
+if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+        console.log("Reset clicked");
+        const ids = Array.from(
+            document.querySelectorAll('img.image')
+        ).map(i => i.dataset.id);
+        clearGameStateForIds(ids);
+        
+        const data = loadData();
+        if (data.meta && data.meta.roundImages) {
+            delete data.meta.roundImages;
+            saveData(data);
+        }
+        
+        initGame();
+    });
+}
+
+// Called after successful completion (Mediachat.md, line 735)
+if (incorrectImages.length === 0) {
+    const elapsed = timerHandle.stop();
+    const username = window.currentPlayerUid || 'Guest';
+    submitFinalTime(username, elapsed);
+    showCongrats();
+    initGame();
+}
+```
 
 ---
 
-## 3. LIST (Row 2 - Data Abstraction)
+## List
 
-### Master List (Mediachat.md, line 178)
+### i. Data Storage in List
+
 ```javascript
+// Master list of all media outlets (Mediachat.md, line 178)
 const imageFiles = [
     { src: "atlanticL.png", company: "Atlantic", bin: "Left" },
     { src: "buzzfeedL.png", company: "Buzzfeed", bin: "Left" },
     { src: "cnnL.png", company: "CNN", bin: "Left" },
-    // ... 27 more entries (30 total)
+    { src: "epochR.png", company: "Epoch Times", bin: "Right" },
+    { src: "forbesC.png", company: "Forbes", bin: "Center" },
+    { src: "hillC.png", company: "The Hill", bin: "Center" },
+    { src: "nbcL.png", company: "NBC", bin: "Left" },
+    { src: "newsweekC.png", company: "Newsweek", bin: "Center" },
+    { src: "nytL.png", company: "NY Times", bin: "Left" },
+    { src: "voxL.png", company: "Vox", bin: "Left" },
+    { src: "wtR.png", company: "Washington Times", bin: "Right" },
+    { src: "bbcC.png", company: "BBC", bin: "Center" },
+    { src: "callerR.png", company: "The Daily Caller", bin: "Right" },
+    { src: "dailywireR.png", company: "Daily Wire", bin: "Right" },
+    { src: "federalistR.png", company: "Federalist", bin: "Right" },
+    { src: "foxR.png", company: "Fox News", bin: "Right" },
+    { src: "marketwatchC.png", company: "MarketWatch", bin: "Center" },
+    { src: "newsmaxR.png", company: "Newsmax", bin: "Right" },
+    { src: "nprL.png", company: "NPR", bin: "Left" },
+    { src: "reutersC.png", company: "Reuters", bin: "Center" },
+    { src: "wsjC.png", company: "Wall Street Journal", bin: "Center" },
+    { src: "abcL.png", company: "ABC", bin: "Left" },
+    { src: "timeL.png", company: "Time", bin: "Left" },
+    { src: "yahooL.png", company: "Yahoo News", bin: "Left" },
+    { src: "newsnationC.png", company: "News Nation", bin: "Center" },
+    { src: "reasonC.png", company: "Reason News", bin: "Center" },
+    { src: "sanC.png", company: "SAN News", bin: "Center" },
+    { src: "nypR.png", company: "New York Post", bin: "Right" },
+    { src: "upwardR.png", company: "Upward News", bin: "Right" },
+    { src: "cbnR.png", company: "CBN", bin: "Right" }
 ];
 ```
 
-### Selected Images List (Mediachat.md, line 330)
+### ii. Using the List Data
+
 ```javascript
-const getRandomSubset = (arr, count) => {
-    return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
-};
+// Creating randomly selected subset (Mediachat.md, line 330)
+const leftImages = imageFiles.filter(img => img.bin === "Left");
+const centerImages = imageFiles.filter(img => img.bin === "Center");
+const rightImages = imageFiles.filter(img => img.bin === "Right");
 
 selectedImages = [
     ...getRandomSubset(leftImages, 7),
     ...getRandomSubset(centerImages, 7),
     ...getRandomSubset(rightImages, 7)
 ].sort(() => 0.5 - Math.random());
-```
-**Purpose:** Stores 21 randomly selected images for current game
-**Operations:** Filter by category, random selection, concatenation, shuffle
 
-### Incorrect Images List (Mediachat.md, line 630)
-```javascript
+// Validating placements using the list (Mediachat.md, line 630)
 let incorrectImages = [];
 document.querySelectorAll('.bin').forEach(bin => {
     bin.querySelectorAll('.image').forEach(img => {
@@ -98,285 +207,106 @@ document.querySelectorAll('.bin').forEach(bin => {
     });
 });
 ```
-**Purpose:** Collects misplaced items for feedback display
-
-**Why Lists Are Necessary:**
-- Can't use 30 individual variables
-- Need to iterate, filter, and randomly select
-- Dynamic size based on validation results
 
 ---
 
-## 4. PROCEDURE (Row 3 - Procedural Abstraction)
+## End-of-Course Exam Written Responses
 
-### initGame() (Mediachat.md, line 318)
+### Prompt 1: Program Design, Function, and Purpose
+
+**Prompt:** *Identify an expected user of your program. Describe one way your program's design meets the needs of this user.*
+
+**Expected user:** High school/college student learning media bias for research.
+
+**Design feature:** Educational game with immediate feedback showing which outlets are incorrectly placed with modal displays, plus a visual spectrum slider explaining bias characteristics.
+
 ```javascript
-function initGame() {
-    // Clear existing game
-    imagesArea.innerHTML = '';
-    placedImages.clear();
-    gameStarted = false;
-    
-    // Load or create random selection
-    const data = loadData();
-    let selectedImages = null;
-    
-    if (data.meta.roundImages && data.meta.roundImages.length === 21) {
-        // Reuse previous round selection
-        selectedImages = mapIdsToFiles(data.meta.roundImages);
-    }
-    
-    if (!selectedImages) {
-        // Create new random selection (7 from each category)
-        selectedImages = [
-            ...getRandomSubset(leftImages, 7),
-            ...getRandomSubset(centerImages, 7),
-            ...getRandomSubset(rightImages, 7)
-        ].sort(() => 0.5 - Math.random());
-        
-        data.meta.roundImages = selectedImages.map(f => slugify(f.company));
-        saveData(data);
-    }
-    
-    // Create image cards
-    selectedImages.forEach(file => {
-        const card = createImageCard(file);
-        imagesArea.appendChild(card);
-    });
-    
-    // Restore saved placements
-    document.querySelectorAll('img.image').forEach(img => {
-        const id = img.dataset.id;
-        const zone = data.gameState && data.gameState[id];
-        if (zone) {
-            const bin = document.querySelector(`.bin[data-bin="${zone}"]`);
-            if (bin) {
-                bin.querySelector('.bin-content').appendChild(img);
-                placedImages.add(id);
-            }
-        }
-    });
+// Feedback system that meets user needs
+if (incorrectImages.length > 0) {
+    showIncorrectFeedback(incorrectImages);  // Shows specific errors
+    return;
 }
 ```
 
-**Called By:**
-- `window.onload` - Initial page load
-- Reset button - User clicks reset
-- Submit handler - After successful completion
-
-**Purpose:** Centralizes complex initialization logic (60+ lines) that would otherwise be duplicated in 3 places
-
-**Parameters:** None (uses global state)
-
 ---
 
-## 5. ALGORITHM (Row 4 - Algorithm Implementation)
+### Prompt 2: Algorithm Development
 
-### Validation Algorithm (Mediachat.md, line 623)
+**Prompt:** *Consider the first iteration statement included in the Procedure section of your Personalized Project Reference. Identify the number of times the body of your iteration statement will execute. Describe a condition or error that would cause your iteration statement to not terminate and cause an infinite loop. If no such condition or error exists, explain how the loop could be modified to cause an infinite loop.*
+
+**Iteration count:** The loop executes exactly 21 times (length of selectedImages array).
+
+**Infinite loop scenario:** If modified to use `while (i < selectedImages.length)` without incrementing `i++`, the condition would always be true.
+
 ```javascript
-submitBtn.addEventListener('click', () => {
-    // STEP 1: Check completion
-    const totalImages = document.querySelectorAll('.image').length;
-    const placedCount = placedImages.size;
-    
-    if (placedCount < totalImages) {
-        alert(`Haven't placed all images!`);
-        return;  // SELECTION: early exit
-    }
-
-    // STEP 2: Validate correctness
-    let incorrectImages = [];
-    document.querySelectorAll('.bin').forEach(bin => {  // ITERATION
-        bin.querySelectorAll('.image').forEach(img => {  // NESTED ITERATION
-            if (img.dataset.bin !== bin.dataset.bin) {  // SELECTION
-                incorrectImages.push({
-                    name: img.dataset.company,
-                    currentBin: bin.dataset.bin,
-                    src: img.src
-                });
-            }
-        });
-    });
-
-    // STEP 3: Handle incorrect placements
-    if (incorrectImages.length > 0) {  // SELECTION
-        showIncorrectFeedback(incorrectImages);
-        return;
-    }
-
-    // STEP 4: Success - record score
-    if (timerHandle) {  // SELECTION
-        const elapsed = timerHandle.stop();
-        const username = window.currentPlayerUid || 'Guest';
-        
-        // Save locally
-        const d = loadData();
-        d.attempts = d.attempts || [];
-        d.attempts.push({ username, time: elapsed, at: Date.now() });
-        saveData(d);
-        
-        // Submit to server
-        submitFinalTime(username, elapsed);
-        showCongrats();
-        initGame();
-    }
+// CURRENT (terminates correctly):
+selectedImages.forEach((file) => {
+    const card = createImageCard(file);
+    imagesArea.appendChild(card);
 });
-```
 
-**Includes:**
-- **Sequencing:** Steps 1→2→3→4 executed in order
-- **Selection:** 4 if-statements determine path
-- **Iteration:** 2 nested forEach loops
-
----
-
-## 6. BACKEND API
-
-### Score Submission (media_api.py, line 91)
-```python
-class MediaScoreAPI(Resource):
-    def post(self, username=None, time=None):
-        # Accept path params OR JSON body
-        if username and time:
-            time = int(time)
-        else:
-            body = request.get_json()
-            username = body.get('username')
-            time = int(body.get('time'))
-        
-        # Save to database
-        score = MediaScore(username=username, time=time)
-        created_score = score.create()
-        
-        return created_score.read(), 201
-```
-
-### Leaderboard (media_api.py, line 140)
-```python
-class MediaLeaderboardAPI(Resource):
-    def get(self):
-        # Get best time per user using SQL
-        subquery = db.session.query(
-            MediaScore.username,
-            func.min(MediaScore.time).label('best_time')
-        ).group_by(MediaScore.username).subquery()
-        
-        scores = db.session.query(MediaScore).join(
-            subquery,
-            db.and_(
-                MediaScore.username == subquery.c.username,
-                MediaScore.time == subquery.c.best_time
-            )
-        ).order_by(MediaScore.time.asc()).limit(limit).all()
-        
-        # Add ranks
-        leaderboard = []
-        for rank, score in enumerate(scores, start=1):
-            entry = score.read()
-            entry['rank'] = rank
-            leaderboard.append(entry)
-        
-        return leaderboard, 200
-```
-
-### Database Model (media_api.py, line 17)
-```python
-class MediaScore(db.Model):
-    __tablename__ = 'media_scores'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
-    time = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    def create(self):
-        db.session.add(self)
-        db.session.commit()
-        return self
+// MODIFIED (infinite loop):
+let i = 0;
+while (i < selectedImages.length) {
+    imagesArea.appendChild(createImageCard(selectedImages[i]));
+    // Missing i++ causes infinite loop
+}
 ```
 
 ---
 
-## 7. ADMIN UI (Postman Alternative)
+### Prompt 3: Errors and Testing
 
-### Testing Interface (u2table.html, line 465)
+**Prompt:** *Consider the procedure included in part (i) of the Procedure section of your Personalized Project Reference. Describe a change to your procedure that will result in a run-time error. Explain why this change will result in a run-time error.*
+
+**Error scenario:** Setting `selectedImages = null` then calling `selectedImages.forEach()` would crash with `TypeError: Cannot read property 'forEach' of null` because null has no methods.
+
+| **Before (Works Correctly)** | **After (Runtime Error)** | **What Changed** |
+|------------------------------|---------------------------|------------------|
+| ```javascript<br>if (!selectedImages) {<br>    selectedImages = [<br>        ...getRandomSubset(leftImages, 7),<br>        ...getRandomSubset(centerImages, 7),<br>        ...getRandomSubset(rightImages, 7)<br>    ].sort(() => 0.5 - Math.random());<br>}<br><br>selectedImages.forEach((file) => {<br>    const card = createImageCard(file);<br>    imagesArea.appendChild(card);<br>});<br>``` | ```javascript<br>// Force null assignment<br>selectedImages = null;<br><br><br><br><br><br><br><br>selectedImages.forEach((file) => {<br>    const card = createImageCard(file);<br>    imagesArea.appendChild(card);<br>});<br>// CRASH: Cannot read 'forEach' of null<br>``` | Removed the safety check that creates a valid array when `selectedImages` is falsy, and instead directly assigned `null`. This causes `.forEach()` to fail because you cannot call array methods on `null`. |
+
+---
+
+### Prompt 4: Data and Procedural Abstraction
+
+**Prompt:** *Suppose you are provided with a procedure called isEqual(value1, value2). The procedure returns true if the two parameters value1 and value2 are equal in value and returns false otherwise. Using the list you identified in the List section of your Personalized Project Reference, explain in detailed steps an algorithm that uses isEqual to count the number of times a certain value appears in your list. Your explanation must be detailed enough for someone else to write the program code.*
+
+To count the number of times a certain value appears in my `imageFiles` list using the `isEqual` procedure, you would follow these detailed steps:
+
+**Step 1:** Initialize a counter variable called `count` and set it to 0. This variable will keep track of how many matches we find.
+
+**Step 2:** Define the target value you want to search for. Since my `imageFiles` list contains objects with properties (`src`, `company`, `bin`), I need to specify which property to compare and what value to look for. For example, if I want to count how many outlets are categorized as `"Left"`, my target would be the string `"Left"`.
+
+**Step 3:** Create a loop that iterates through every element in the `imageFiles` array. Use a `for` loop or `forEach` loop to access each element one at a time, starting from index 0 and continuing until you reach the last element.
+
+**Step 4:** For each element in the loop, extract the specific property value you want to compare. For example, if you're counting `"Left"` outlets, extract the `bin` property from the current object using `imageFiles[i].bin` or `element.bin`.
+
+**Step 5:** Call the `isEqual` procedure with two parameters: the extracted property value from the current element and your target value. For example: `isEqual(element.bin, "Left")`.
+
+**Step 6:** Check the return value from `isEqual`. If it returns `true` (meaning the values match), increment the `count` variable by 1 using `count = count + 1` or `count++`. If `isEqual` returns `false`, do nothing and continue to the next element.
+
+**Step 7:** Continue the loop until you have examined every element in the `imageFiles` array.
+
+**Step 8:** After the loop completes, the `count` variable will contain the total number of occurrences of your target value in the list. Return or display this `count` value.
+
+For example, if `imageFiles` contains 30 media outlets and 10 of them have `bin` equal to `"Left"`, this algorithm would result in `count` being 10 after all iterations complete.
+
 ```javascript
-// Edit score
-async function editMediaScore(scoreId, currentUsername, currentTime) {
-    const newUsername = prompt(`Enter new username:`, currentUsername);
-    const newTime = prompt(`Enter new time (seconds):`, currentTime);
+// Example implementation of the algorithm
+function countOccurrences(targetBin) {
+    let count = 0;
     
-    fetch(`/media/update/${scoreId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: newUsername, time: parseInt(newTime) })
-    });
+    for (let i = 0; i < imageFiles.length; i++) {
+        if (isEqual(imageFiles[i].bin, targetBin)) {
+            count++;
+        }
+    }
+    
+    return count;
 }
 
-// Delete score
-async function deleteMediaScore(scoreId) {
-    if (!confirm('Delete this score?')) return;
-    fetch(`/media/delete/${scoreId}`, { method: 'DELETE' });
-}
+// Example usage:
+let leftCount = countOccurrences("Left");     // Returns 10
+let centerCount = countOccurrences("Center"); // Returns 10
+let rightCount = countOccurrences("Right");   // Returns 10
 ```
-
-**Features:** View all scores, edit entries, delete entries, view stats
-
----
-
-## 8. COLLEGE BOARD ALIGNMENT
-
-### Row 1: Program Purpose and Function
-**Purpose:** Teach media bias identification  
-**Input:** Drag-and-drop, authentication  
-**Output:** Feedback modals, leaderboard, timer  
-**Functionality:** Sort 21 outlets, get validation, compete on timed leaderboard
-
-### Row 2: Data Abstraction
-**List Name:** `selectedImages`  
-**Stores:** 21 randomly selected media outlet objects  
-**Used For:** Game initialization, display, validation  
-**Why Necessary:** Can't use 21+ variables; needs iteration, filtering, random selection
-
-### Row 3: Procedural Abstraction
-**Procedure:** `initGame()`  
-**Parameters:** None  
-**Called:** Page load, reset, after completion  
-**Advantage:** Prevents duplicating 60+ lines in 3 places
-
-### Row 4: Algorithm
-**Algorithm:** Submit validation  
-**Includes:** Sequencing (4 steps), selection (4 if-statements), iteration (2 nested loops)  
-**Purpose:** Verify completion and correctness before recording score
-
----
-
-## 9. NO HARD-CODED DATA
-
-✅ Image list could load from JSON/API  
-✅ Game state in localStorage (dynamic)  
-✅ Leaderboard from database (no preset winners)  
-✅ Users from database (no hard-coded accounts)
-
----
-
-## VIDEO CHECKLIST
-
-- [ ] Show drag-and-drop input
-- [ ] Show incorrect feedback output (trigger error)
-- [ ] Show successful completion output (leaderboard update)
-- [ ] Mention `selectedImages` list usage
-- [ ] Call `initGame()` via reset button
-- [ ] Demonstrate validation algorithm (show both paths)
-
----
-
-## QUICK REFERENCE
-
-**Input:** Lines 350 (drag), 623 (submit)  
-**Output:** Lines 505 (feedback), 475 (leaderboard)  
-**List:** Lines 178 (master), 330 (selected), 630 (incorrect)  
-**Procedure:** Line 318 (`initGame`)  
-**Algorithm:** Line 623 (validation)  
-**Backend:** media_api.py lines 17, 91, 140  
-**Admin UI:** u2table.html line 465
