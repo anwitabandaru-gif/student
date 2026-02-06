@@ -7,135 +7,117 @@ permalink: /write-up/
 
 ---
 
+## Program Overview
+
+### Program Purpose
+An educational game that teaches users to identify media bias by sorting news outlets into Left, Center, or Right political categories, helping students develop critical thinking skills for evaluating news sources.
+
+### Key Program Components
+
+#### Input
+- **User drag-and-drop actions**: Moving media outlet logo images between Left, Center, and Right bins
+- **Button clicks**: Reset game, submit score, autofill (testing mode)
+- **Stored data**: Previously saved image placements from localStorage
+
+#### Output
+- **Visual feedback modal**: Displays incorrectly placed outlets with names, current bin location, and thumbnails
+- **Timer display**: Shows elapsed time in MM:SS format during gameplay
+- **Leaderboard**: Top 5 players with usernames and completion times
+- **Success modal**: Congratulatory message upon correct completion
+
+#### List (Data Collection)
+```javascript
+const imageFiles = [
+    { src: "atlanticL.png", company: "Atlantic", bin: "Left" },
+    { src: "cnnL.png", company: "CNN", bin: "Left" },
+    { src: "foxR.png", company: "Fox News", bin: "Right" },
+    { src: "bbcC.png", company: "BBC", bin: "Center" },
+    // ... 26 more media outlets (30 total)
+];
+```
+**Purpose**: Stores all media outlet data (image filename, company name, correct bias category) in a single array structure instead of 90 separate variables.
+
+#### Student-Developed Procedure
+```javascript
+function autofillImageGame(showAlert) { 
+    // Automatically places all images in their correct bins
+    // and optionally shows feedback based on the parameter
+}
+```
+**Parameter:** `showAlert` (boolean) - Controls whether to display alert feedback  
+**Return Type:** None (void)  
+**Contains:** Sequencing, selection, and iteration
+
+---
+
 ## Procedure
 
 ### i. Student-Developed Procedure
 
 ```javascript
-// Student-developed procedure: initGame()
-// Location: mainmodule.md, line 1023
-// This procedure initializes the game state and displays randomly selected images
+// Student-developed procedure: autofillImageGame(showAlert)
+// Location: Mediachat.md, line 582
+// This procedure automatically places all images in their correct bins
+// and optionally displays feedback to the user
 
-function initGame() {
-    // SEQUENCING: Clear existing game state
-    imagesArea.innerHTML = '';
+function autofillImageGame(showAlert = false) {
+    // SEQUENCING: Clear all bins first
     document.querySelectorAll('.bin-content').forEach(el => el.innerHTML = '');
-    placedImages.clear();
-    gameStarted = false;
     
-    if (timerHandle) {
-        timerHandle.stop();
-        timerHandle = null;
-    }
-    
-    if (timerDisplay) {
-        timerDisplay.textContent = 'Time: 0:00';
-    }
-
-    const getRandomSubset = (arr, count) => {
-        return [...arr]
-            .sort(() => 0.5 - Math.random())
-            .slice(0, count);
-    };
-
-    const leftImages = imageFiles.filter(img => img.bin === "Left");
-    const centerImages = imageFiles.filter(img => img.bin === "Center");
-    const rightImages = imageFiles.filter(img => img.bin === "Right");
-
-    // ITERATION & SELECTION: Load or create selection
+    // Get all image elements and initialize counter
+    const imgs = Array.from(document.querySelectorAll('img.image'));
+    let correctCount = 0;
     const data = loadData();
-    data.meta = data.meta || {};
-    let selectedImages = null;
-    
-    if (Array.isArray(data.meta.roundImages) && 
-        data.meta.roundImages.length === 21) {
-        const idMap = new Map(imageFiles.map(f => 
-            [slugify(f.company), f]));
-        const files = data.meta.roundImages
-            .map(id => idMap.get(id))
-            .filter(Boolean);
-        if (files.length === 21) {
-            selectedImages = files;
-        }
-    }
+    data.gameState = data.gameState || {};
 
-    // SELECTION: Create new selection if needed
-    if (!selectedImages) {
-        selectedImages = [
-            ...getRandomSubset(leftImages, 7),
-            ...getRandomSubset(centerImages, 7),
-            ...getRandomSubset(rightImages, 7)
-        ].sort(() => 0.5 - Math.random());
-        
-        data.meta.roundImages = selectedImages.map(f => 
-            slugify(f.company));
-        saveData(data);
-    }
-
-    // ITERATION: Create and display image cards
-    selectedImages.forEach((file) => {
-        const card = createImageCard(file);
-        imagesArea.appendChild(card);
-    });
-
-    // ITERATION: Restore saved placements
-    document.querySelectorAll('img.image').forEach(img => {
+    // ITERATION: Process each image
+    imgs.forEach(img => {
+        // Get the correct bin for this image
+        const target = img.dataset.bin;
         const id = img.dataset.id;
-        const zone = data.gameState && data.gameState[id];
-        if (zone) {
-            const bin = document.querySelector(
-                `.bin[data-bin="${zone}"]`);
-            if (bin) {
-                bin.querySelector('.bin-content')
-                    .appendChild(img);
-                placedImages.add(id);
-            }
+        
+        // SELECTION: Find the matching bin element
+        const bin = Array.from(document.querySelectorAll('.bin'))
+            .find(b => b.dataset.bin === target);
+        
+        if (bin) {
+            // Place image in correct bin
+            bin.querySelector('.bin-content').appendChild(img);
+            img.style.opacity = '1';
+            img.style.cursor = 'grab';
+            placedImages.add(id);
+            data.gameState[id] = target; // Persist to storage
+            correctCount++;
         }
     });
+
+    saveData(data);
+    
+    // SELECTION: Show alert based on parameter
+    if (showAlert) {
+        alert(`Autofill placed ${correctCount} images into their correct bins.`);
+    }
 }
 ```
 
 ### ii. Procedure Calls
 
 ```javascript
-// Called on page load (Mediachat.md, line 800)
-window.onload = () => {
-    console.log("Window fully loaded — starting game");
-    fetchUser();
-    initGame();
-    fetchLeaderboard();
-    setInterval(fetchLeaderboard, 30000);
-};
-
-// Called when user clicks reset button (Mediachat.md, line 680)
-const resetBtn = document.getElementById('reset-btn');
-if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-        console.log("Reset clicked");
-        const ids = Array.from(
-            document.querySelectorAll('img.image')
-        ).map(i => i.dataset.id);
-        clearGameStateForIds(ids);
-        
-        const data = loadData();
-        if (data.meta && data.meta.roundImages) {
-            delete data.meta.roundImages;
-            saveData(data);
-        }
-        
-        initGame();
+// Called when user clicks autofill button (Mediachat.md, line 690)
+// Passes TRUE to show alert feedback to the user
+const autofillBtn = document.getElementById('autofill-images');
+if (autofillBtn) {
+    autofillBtn.addEventListener('click', () => {
+        console.log("✨ Autofill clicked");
+        autofillImageGame(true);  // Parameter: showAlert = true
     });
 }
-
-// Called after successful completion (Mediachat.md, line 735)
-if (incorrectImages.length === 0) {
-    const elapsed = timerHandle.stop();
-    const username = window.currentPlayerUid || 'Guest';
-    submitFinalTime(username, elapsed);
-    showCongrats();
-    initGame();
-}
 ```
+
+**How the parameter affects functionality:**
+- When `showAlert = true`: Displays an alert message showing how many images were placed
+- When `showAlert = false`: Silently places images without any user notification
+- The parameter directly controls the `if (showAlert)` conditional at the end of the procedure
 
 ---
 
@@ -212,101 +194,247 @@ document.querySelectorAll('.bin').forEach(bin => {
 
 ## End-of-Course Exam Written Responses
 
-### Prompt 1: Program Design, Function, and Purpose
+### Written Response 1: Program Design, Function, and Purpose
 
-**Prompt:** *Identify an expected user of your program. Describe one way your program's design meets the needs of this user.*
+**Learning Objectives:** CRD-2.A, CRD-2.B, CRD-2.C, CRD-2.D, CRD-2.E, CRD-2.F, CRD-2.G
 
-**Expected user:** High school/college student learning media bias for research.
+#### a) Describe the purpose of your computing innovation.
 
-**Design feature:** Educational game with immediate feedback showing which outlets are incorrectly placed with modal displays, plus a visual spectrum slider explaining bias characteristics.
+The program teaches users to identify media bias by categorizing news outlets into Left, Center, or Right bins, helping students develop critical thinking skills for evaluating news sources.
+
+#### b) Describe the functionality of the `initGame()` procedure.
+
+`initGame()` resets the game state, randomly selects 21 media outlets (7 from each political category), displays them as draggable images, and restores any previously saved placements from localStorage.
+
+#### c) Identify one input to your program.
+
+User drag-and-drop actions when moving media outlet images into Left, Center, or Right bins.
+
+#### d) Identify one output produced by your program.
+
+A modal feedback display showing incorrectly placed outlets with their names, current bin location, and thumbnails when the user submits an incorrect answer.
 
 ```javascript
-// Feedback system that meets user needs
-if (incorrectImages.length > 0) {
-    showIncorrectFeedback(incorrectImages);  // Shows specific errors
-    return;
-}
+// Output example: showIncorrectFeedback modal
+const imageGrid = incorrectImages.map(img => 
+    `
+        
+        
+            ${img.name}
+            Currently in: ${img.currentBin}
+        
+    `
+).join('');
+```
+
+#### e) Describe one aspect of the user interface design.
+
+The interface uses a collapsible "Spectrum of Bias" slider that lets users explore different bias levels (Far Left to Far Right) with visual colors, emojis, and descriptions before attempting the sorting task.
+
+#### f) Describe the purpose of the drag-and-drop event handlers in your code.
+
+```javascript
+// Enables image movement between bins and starts timer on first interaction
+img.addEventListener('dragstart', (e) => {
+    if (!gameStarted) {
+        gameStarted = true;
+        timerHandle = startTimer();  // Start timing on first drag
+    }
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', e.target.dataset.id);
+});
 ```
 
 ---
 
-### Prompt 2: Algorithm Development
+### Written Response 2(a): Algorithm Development
 
-**Prompt:** *Consider the first iteration statement included in the Procedure section of your Personalized Project Reference. Identify the number of times the body of your iteration statement will execute. Describe a condition or error that would cause your iteration statement to not terminate and cause an infinite loop. If no such condition or error exists, explain how the loop could be modified to cause an infinite loop.*
+**Learning Objectives:** CRD-2.B, AAP-2.E.b, AAP-2.F.b, AAP-2.H.b, AAP-2.J, AAP-2.K.b, AAP-2.L, AAP-2.M.a, AAP-2.M.b
 
-**Iteration count:** The loop executes exactly 21 times (length of selectedImages array).
+#### a) Explain how the random selection algorithm in `initGame()` functions.
 
-**Infinite loop scenario:** If modified to use `while (i < selectedImages.length)` without incrementing `i++`, the condition would always be true.
+The algorithm filters `imageFiles` by bias category, uses `getRandomSubset()` to select 7 outlets from each category, combines them into a 21-item array, and randomizes the final order.
 
 ```javascript
-// CURRENT (terminates correctly):
+const leftImages = imageFiles.filter(img => img.bin === "Left");
+const centerImages = imageFiles.filter(img => img.bin === "Center");
+const rightImages = imageFiles.filter(img => img.bin === "Right");
+
+selectedImages = [
+    ...getRandomSubset(leftImages, 7),
+    ...getRandomSubset(centerImages, 7),
+    ...getRandomSubset(rightImages, 7)
+].sort(() => 0.5 - Math.random());
+```
+
+#### b) Evaluate this relational operator: What does `data.meta.roundImages.length === 21` check?
+
+It checks whether the saved round contains exactly 21 images to determine if the previous game state is valid for reuse.
+
+#### c) Determine the result of this conditional statement:
+
+```javascript
+if (!selectedImages) {
+    selectedImages = [ /* create new array */ ];
+}
+```
+
+If `selectedImages` is `null`, `undefined`, or `false`, the condition evaluates to `true` and creates a new random selection. Otherwise, it uses the existing selection.
+
+#### d) How many times does this iteration execute?
+
+```javascript
 selectedImages.forEach((file) => {
     const card = createImageCard(file);
     imagesArea.appendChild(card);
 });
+```
 
-// MODIFIED (infinite loop):
-let i = 0;
-while (i < selectedImages.length) {
-    imagesArea.appendChild(createImageCard(selectedImages[i]));
-    // Missing i++ causes infinite loop
+Executes exactly **21 times** (the length of `selectedImages`).
+
+#### e) Compare these two algorithms - do they produce the same result?
+
+**Algorithm 1 (Current):**
+```javascript
+const leftImages = imageFiles.filter(img => img.bin === "Left");
+const centerImages = imageFiles.filter(img => img.bin === "Center");
+const rightImages = imageFiles.filter(img => img.bin === "Right");
+```
+
+**Algorithm 2 (Alternative):**
+```javascript
+let leftImages = [], centerImages = [], rightImages = [];
+for (let i = 0; i < imageFiles.length; i++) {
+    if (imageFiles[i].bin === "Left") leftImages.push(imageFiles[i]);
+    else if (imageFiles[i].bin === "Center") centerImages.push(imageFiles[i]);
+    else if (imageFiles[i].bin === "Right") rightImages.push(imageFiles[i]);
 }
 ```
 
----
+**Yes**, both produce the same result - three arrays categorized by bias.
 
-### Prompt 3: Errors and Testing
+#### f) Describe an algorithm modification you made.
 
-**Prompt:** *Consider the procedure included in part (i) of the Procedure section of your Personalized Project Reference. Describe a change to your procedure that will result in a run-time error. Explain why this change will result in a run-time error.*
-
-**Error scenario:** Setting `selectedImages = null` then calling `selectedImages.forEach()` would crash with `TypeError: Cannot read property 'forEach' of null` because null has no methods.
-
-| **Before (Works Correctly)** | **After (Runtime Error)** | **What Changed** |
-|------------------------------|---------------------------|------------------|
-| ```javascript<br>if (!selectedImages) {<br>    selectedImages = [<br>        ...getRandomSubset(leftImages, 7),<br>        ...getRandomSubset(centerImages, 7),<br>        ...getRandomSubset(rightImages, 7)<br>    ].sort(() => 0.5 - Math.random());<br>}<br><br>selectedImages.forEach((file) => {<br>    const card = createImageCard(file);<br>    imagesArea.appendChild(card);<br>});<br>``` | ```javascript<br>// Force null assignment<br>selectedImages = null;<br><br><br><br><br><br><br><br>selectedImages.forEach((file) => {<br>    const card = createImageCard(file);<br>    imagesArea.appendChild(card);<br>});<br>// CRASH: Cannot read 'forEach' of null<br>``` | Removed the safety check that creates a valid array when `selectedImages` is falsy, and instead directly assigned `null`. This causes `.forEach()` to fail because you cannot call array methods on `null`. |
+I combined the existing `getRandomSubset()` helper function with array spread operators to create a more concise random selection algorithm.
 
 ---
 
-### Prompt 4: Data and Procedural Abstraction
+### Written Response 2(b): Errors and Testing
 
-**Prompt:** *Suppose you are provided with a procedure called isEqual(value1, value2). The procedure returns true if the two parameters value1 and value2 are equal in value and returns false otherwise. Using the list you identified in the List section of your Personalized Project Reference, explain in detailed steps an algorithm that uses isEqual to count the number of times a certain value appears in your list. Your explanation must be detailed enough for someone else to write the program code.*
+**Learning Objectives:** CRD-2.I.a, CRD-2.I.b, CRD-2.J
 
-To count the number of times a certain value appears in my `imageFiles` list using the `isEqual` procedure, you would follow these detailed steps:
-
-**Step 1:** Initialize a counter variable called `count` and set it to 0. This variable will keep track of how many matches we find.
-
-**Step 2:** Define the target value you want to search for. Since my `imageFiles` list contains objects with properties (`src`, `company`, `bin`), I need to specify which property to compare and what value to look for. For example, if I want to count how many outlets are categorized as `"Left"`, my target would be the string `"Left"`.
-
-**Step 3:** Create a loop that iterates through every element in the `imageFiles` array. Use a `for` loop or `forEach` loop to access each element one at a time, starting from index 0 and continuing until you reach the last element.
-
-**Step 4:** For each element in the loop, extract the specific property value you want to compare. For example, if you're counting `"Left"` outlets, extract the `bin` property from the current object using `imageFiles[i].bin` or `element.bin`.
-
-**Step 5:** Call the `isEqual` procedure with two parameters: the extracted property value from the current element and your target value. For example: `isEqual(element.bin, "Left")`.
-
-**Step 6:** Check the return value from `isEqual`. If it returns `true` (meaning the values match), increment the `count` variable by 1 using `count = count + 1` or `count++`. If `isEqual` returns `false`, do nothing and continue to the next element.
-
-**Step 7:** Continue the loop until you have examined every element in the `imageFiles` array.
-
-**Step 8:** After the loop completes, the `count` variable will contain the total number of occurrences of your target value in the list. Return or display this `count` value.
-
-For example, if `imageFiles` contains 30 media outlets and 10 of them have `bin` equal to `"Left"`, this algorithm would result in `count` being 10 after all iterations complete.
+#### a) Identify an error in this code:
 
 ```javascript
-// Example implementation of the algorithm
-function countOccurrences(targetBin) {
-    let count = 0;
-    
-    for (let i = 0; i < imageFiles.length; i++) {
-        if (isEqual(imageFiles[i].bin, targetBin)) {
-            count++;
-        }
-    }
-    
-    return count;
-}
+selectedImages = null;
+selectedImages.forEach((file) => {
+    const card = createImageCard(file);
+    imagesArea.appendChild(card);
+});
+```
 
-// Example usage:
-let leftCount = countOccurrences("Left");     // Returns 10
-let centerCount = countOccurrences("Center"); // Returns 10
-let rightCount = countOccurrences("Right");   // Returns 10
+**Error:** `TypeError: Cannot read property 'forEach' of null`
+
+#### b) Correct the error:
+
+```javascript
+// Add null check before forEach
+if (selectedImages && Array.isArray(selectedImages)) {
+    selectedImages.forEach((file) => {
+        const card = createImageCard(file);
+        imagesArea.appendChild(card);
+    });
+}
+```
+
+#### c) Identify test inputs and expected outputs:
+
+| **Input** | **Expected Output** |
+|-----------|---------------------|
+| User drags CNN logo to "Left" bin | Image stays in bin, saved to localStorage with `gameState[id] = "Left"` |
+| User drags Fox News to "Left" bin then submits | Modal appears showing "Fox News - Currently in: Left" as incorrect |
+| User places all 21 images correctly then submits | Timer stops, success modal appears, score saved with username and time |
+
+---
+
+### Written Response 2(c): Data and Procedural Abstraction
+
+**Learning Objectives:** AAP-1.D.a, AAP-1.D.b, AAP-2.O.a, AAP-2.O.b, AAP-3.B
+
+#### a) How does the `imageFiles` list manage complexity?
+
+The list stores all 30 media outlets with their properties in one structure instead of requiring 30 separate variables (e.g., `cnn_src`, `cnn_company`, `cnn_bin`, `fox_src`, `fox_company`, `fox_bin`, etc.).
+
+**Without list (high complexity):**
+```javascript
+const cnn_src = "cnnL.png";
+const cnn_company = "CNN";
+const cnn_bin = "Left";
+const fox_src = "foxR.png";
+const fox_company = "Fox News";
+const fox_bin = "Right";
+// ... 28 more outlets × 3 variables = 90 variables total!
+```
+
+**With list (low complexity):**
+```javascript
+const imageFiles = [
+    { src: "cnnL.png", company: "CNN", bin: "Left" },
+    { src: "foxR.png", company: "Fox News", bin: "Right" },
+    // ... 28 more objects
+];
+```
+
+#### b) Write an iteration to traverse the `incorrectImages` list:
+
+```javascript
+let incorrectImages = [];
+document.querySelectorAll('.bin').forEach(bin => {
+    bin.querySelectorAll('.image').forEach(img => {
+        if (img.dataset.bin !== bin.dataset.bin) {
+            incorrectImages.push({
+                name: img.dataset.company,
+                currentBin: bin.dataset.bin,
+                src: img.src
+            });
+        }
+    });
+});
+```
+
+#### c) Determine the result of this list traversal algorithm:
+
+```javascript
+const leftImages = imageFiles.filter(img => img.bin === "Left");
+```
+
+**Result:** A new array containing only the media outlets where `bin === "Left"` (CNN, NBC, NPR, NY Times, Vox, Atlantic, Buzzfeed, ABC, Time, Yahoo News) - 10 elements.
+
+#### d) How does the `initGame()` procedure manage complexity?
+
+`initGame()` encapsulates 9 separate tasks (clearing state, stopping timer, filtering categories, loading saved data, creating random selection, creating cards, restoring placements, saving state, updating display) into one reusable procedure that can be called from multiple places (page load, reset button, game completion) instead of duplicating all that code.
+
+**Without procedure abstraction:**
+```javascript
+// Reset button - duplicate all code
+resetBtn.addEventListener('click', () => {
+    imagesArea.innerHTML = '';
+    document.querySelectorAll('.bin-content').forEach(el => el.innerHTML = '');
+    placedImages.clear();
+    // ... 50+ more lines
+});
+
+// Page load - duplicate all code again
+window.onload = () => {
+    imagesArea.innerHTML = '';
+    document.querySelectorAll('.bin-content').forEach(el => el.innerHTML = '');
+    placedImages.clear();
+    // ... 50+ more lines duplicated
+};
+```
+
+**With procedure abstraction:**
+```javascript
+resetBtn.addEventListener('click', () => { initGame(); });
+window.onload = () => { initGame(); };
 ```
