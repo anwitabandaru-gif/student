@@ -113,7 +113,46 @@ if (autofillBtn) {
     });
 }
 ```
+## Selection
 
+### SELECTION Part 1: Find the matching bin
+```javascript
+const bin = Array.from(document.querySelectorAll('.bin'))
+    .find(b => b.dataset.bin === target);
+```
+- Gets all three bins (Left, Center, Right) on the page
+- Uses `.find()` to search for the bin that matches the image's correct category
+- Example: If `target = "Left"`, it finds the bin with `data-bin="Left"`
+
+### SELECTION Part 2: Only place if bin exists
+```javascript
+if (bin) {
+    // ... place the image
+}
+```
+- Checks if a matching bin was found
+- If yes → place the image inside it
+- If no → skip this image (safety check)
+
+### Inside the if block:
+```javascript
+bin.querySelector('.bin-content').appendChild(img);  // Move image to bin
+img.style.opacity = '1';                              // Make it visible
+img.style.cursor = 'grab';                            // Show it's draggable
+placedImages.add(id);                                 // Track it as placed
+data.gameState[id] = target;                          // Save to localStorage
+correctCount++;                                        // Count successful placement
+```
+
+### SELECTION Part 3: Alert based on parameter
+```javascript
+if (showAlert) {
+    alert(`Autofill placed ${correctCount} images into their correct bins.`);
+}
+```
+- If `showAlert = true` → show the alert
+- If `showAlert = false` → skip the alert
+- This is how the parameter controls the procedure's behavior!
 **How the parameter affects functionality:**
 - When `showAlert = true`: Displays an alert message showing how many images were placed
 - When `showAlert = false`: Silently places images without any user notification
