@@ -136,100 +136,64 @@ imgs.forEach(img => {
  Both the parameter-controlled conditional (`if (showAlert)`) AND the loop with if statement (`imgs.forEach` with `if (bin)`) are inside the same function: `autofillImageGame(showAlert)`
 ---
 
-### LIST/GROUP Requirement
-**Location:** `imageFiles` array declaration (Mediachat.md, line 178)
-
-```javascript
-// MASTER LIST: All 30 media outlets
-const imageFiles = [
-    { src: "atlanticL.png", company: "Atlantic", bin: "Left" },
-    { src: "buzzfeedL.png", company: "Buzzfeed", bin: "Left" },
-    { src: "cnnL.png", company: "CNN", bin: "Left" },
-    { src: "epochR.png", company: "Epoch Times", bin: "Right" },
-    { src: "forbesC.png", company: "Forbes", bin: "Center" },
-    { src: "hillC.png", company: "The Hill", bin: "Center" },
-    { src: "nbcL.png", company: "NBC", bin: "Left" },
-    { src: "newsweekC.png", company: "Newsweek", bin: "Center" },
-    { src: "nytL.png", company: "NY Times", bin: "Left" },
-    { src: "voxL.png", company: "Vox", bin: "Left" },
-    { src: "wtR.png", company: "Washington Times", bin: "Right" },
-    { src: "bbcC.png", company: "BBC", bin: "Center" },
-    { src: "callerR.png", company: "The Daily Caller", bin: "Right" },
-    { src: "dailywireR.png", company: "Daily Wire", bin: "Right" },
-    { src: "federalistR.png", company: "Federalist", bin: "Right" },
-    { src: "foxR.png", company: "Fox News", bin: "Right" },
-    { src: "marketwatchC.png", company: "MarketWatch", bin: "Center" },
-    { src: "newsmaxR.png", company: "Newsmax", bin: "Right" },
-    { src: "nprL.png", company: "NPR", bin: "Left" },
-    { src: "reutersC.png", company: "Reuters", bin: "Center" },
-    { src: "wsjC.png", company: "Wall Street Journal", bin: "Center" },
-    { src: "abcL.png", company: "ABC", bin: "Left" },
-    { src: "timeL.png", company: "Time", bin: "Left" },
-    { src: "yahooL.png", company: "Yahoo News", bin: "Left" },
-    { src: "newsnationC.png", company: "News Nation", bin: "Center" },
-    { src: "reasonC.png", company: "Reason News", bin: "Center" },
-    { src: "sanC.png", company: "SAN News", bin: "Center" },
-    { src: "nypR.png", company: "New York Post", bin: "Right" },
-    { src: "upwardR.png", company: "Upward News", bin: "Right" },
-    { src: "cbnR.png", company: "CBN", bin: "Right" }
-];
-```
-
-**What this list does:**
-- Stores all 30 media outlet sources in a single organized data structure
-- Each object contains three pieces of information: image filename, company name, and political bias category
-- Enables the program to access any outlet's data using array methods instead of individual variables
-- Reduces code complexity from 90 variables (30 outlets × 3 properties) to 1 array with 30 objects
-- Serves as the single source of truth for all media outlet information throughout the program
-
-**How the list is used in code:**
-
-```javascript
-// Example 1: Filtering by category
-const leftImages = imageFiles.filter(img => img.bin === "Left");
-const centerImages = imageFiles.filter(img => img.bin === "Center");
-const rightImages = imageFiles.filter(img => img.bin === "Right");
-
-// Example 2: Random selection from list
-selectedImages = [
-    ...getRandomSubset(leftImages, 7),
-    ...getRandomSubset(centerImages, 7),
-    ...getRandomSubset(rightImages, 7)
-];
-
-// Example 3: Creating visual elements from list
-selectedImages.forEach((file) => {
-    const card = createImageCard(file);
-    imagesArea.appendChild(card);
-});
-```
-
-**Without the list (MUCH harder):**
-```javascript
-// Would need 90 separate variables!
-const atlantic_src = "atlanticL.png";
-const atlantic_company = "Atlantic";
-const atlantic_bin = "Left";
-const cnn_src = "cnnL.png";
-const cnn_company = "CNN";
-const cnn_bin = "Left";
-// ... 84 more variables!
-```
+Here's the LIST section updated to use the actual `fetchLeaderboard()` function from `Mediachat.md`:
 
 ---
 
-### Summary Table
+### LIST/GROUP Requirement
+**Location:** `fetchLeaderboard()` function in `Mediachat.md`
 
-| **Requirement** | **Code Element** | **Location** | **Status** |
-|-----------------|------------------|--------------|------------|
-| Function with parameter | `autofillImageGame(showAlert)` | Line 582 | Pass |
-| Parameter changes behavior | `if (showAlert) { alert(...) }` | Line 610 | Pass |
-| Loop with if statement | `imgs.forEach` with `if (bin)` | Line 591-606 | Pass |
-| Loop inside function | Loop is in `autofillImageGame()` | Line 591 | Pass |
-| List stores data | `imageFiles` array | Line 178 | Pass |
-| List is essential | Avoids 90 variables | Throughout | Pass |
-| Hidden: Same function | Loop + parameter in same function | Line 582 | Pass |
+```javascript
+// BACKEND:
+leaderboard = []
+for rank, score in enumerate(scores, start=1):
+    entry = score.read()   # Returns { id, username, time, created_at }
+    entry['rank'] = rank   # Adds rank to each object
+    leaderboard.append(entry)
 
+return leaderboard, 200
+
+```
+
+```javascript
+// FRONTEND:
+async function fetchLeaderboard() {
+    const tbody = document.getElementById('leaderboard-body');
+    try {
+        const response = await fetch(pythonURI + '/api/media/leaderboard?limit=5');
+        if (!response.ok) throw new Error('Failed to fetch leaderboard');
+        
+        const data = await response.json();
+        
+        tbody.innerHTML = '';
+
+        // ITERATION with SELECTION: Loop through every entry in the list
+        data.forEach((entry, index) => {
+            const row = tbody.insertRow();
+
+            row.insertCell().textContent = entry.rank || (index + 1);
+
+            row.insertCell().textContent = entry.username || 'Unknown';
+
+            const timeInSeconds = entry.time || 0;
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            row.insertCell().textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        });
+
+    } catch (err) {
+        console.error('Error fetching leaderboard:', err);
+        tbody.innerHTML = '<tr><td colspan="3">Unable to load leaderboard</td></tr>';
+    }
+}
+
+setInterval(fetchLeaderboard, 30000);
+```
+
+**What this list does:**
+- Stores the top 5 leaderboard entries returned by the backend API, where each object contains a player's rank, username, completion time in seconds, score ID, and submission date
+- Built on the backend by looping through database query results and appending each entry to the list with its rank
+- Sent to the frontend via the API and used to drive the entire leaderboard table display
 
 ---
 
@@ -312,7 +276,6 @@ bin.addEventListener('drop', e => {
 
 // Restore placements on page load
 function initGame() {
-    // ... game setup code ...
     
     // SOLUTION: Restore saved placements
     const data = loadData();
@@ -525,16 +488,6 @@ autofillBtn.addEventListener('click', () => {
 - **Alert is displayed:** "Autofill placed 21 images into their correct bins."
 - User receives immediate visual confirmation
 
-**Screenshot of result:**
-```
-[Alert Dialog]
-------------------------
-Autofill placed 21 images into their correct bins.
-[OK]
-------------------------
-```
-
----
 
 **Test Call 2: Without alert (showAlert = false)**
 ```javascript
@@ -553,12 +506,6 @@ function runAutomatedTest() {
 - Counter increments to 21
 - **No alert is displayed** - function completes silently
 - Automated testing can proceed without user interaction
-
-**Screenshot of result:**
-```
-[No Dialog]
-(Game board shows all images correctly placed, no popup interrupts test)
-```
 
 ---
 
