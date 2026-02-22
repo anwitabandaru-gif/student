@@ -133,10 +133,7 @@ imgs.forEach(img => {
 - Increments the counter to track how many images were successfully placed
 - **Safety check:** If no matching bin exists, skips that image without crashing
 
- Both the parameter-controlled conditional (`if (showAlert)`) AND the loop with if statement (`imgs.forEach` with `if (bin)`) are inside the same function: `autofillImageGame(showAlert)`
----
-
-Here's the LIST section updated to use the actual `fetchLeaderboard()` function from `Mediachat.md`:
+- Both the parameter-controlled conditional (`if (showAlert)`) AND the loop with if statement (`imgs.forEach` with `if (bin)`) are inside the same function: `autofillImageGame(showAlert)`
 
 ---
 
