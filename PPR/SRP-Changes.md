@@ -1,3 +1,8 @@
+---
+permalink: /srp
+title: SRP Changes
+---
+
 ## Before Refactoring
 ```javascript
     window.addEventListener('DOMContentLoaded', () => {
@@ -217,3 +222,40 @@ function saveAttemptLocally(username, elapsed) {
         
     });
 ```
+
+## Analysis of Changes
+
+### What Was Extracted into Worker Functions
+
+Three distinct jobs were pulled out of the submit button handler and given their own named functions:
+
+- `validateAllPlaced()` checks whether all images have been placed before allowing submission
+- `getIncorrectPlacements()` scans every bin, compares each image's target bin against its current bin, and returns a list of mismatches
+- `saveAttemptLocally()` handles building the attempt record and writing it to localStorage
+
+### Why the Original Version Was a Problem
+
+The original submit handler mixed six or more responsibilities into one anonymous function: counting images, looping through bins, building an attempts array, saving to localStorage, stopping the timer, and triggering UI feedback. If a bug appeared in the bin-checking logic, you would have to read through 60+ lines of unrelated code to find it. There was also no way to reuse any of that logic elsewhere without copy-pasting it.
+
+### What Is Concretely Better Now
+
+The refactored submit handler acts purely as an orchestrator. Its job is only to call the right workers in the right order and respond to their results. The actual logic lives in the workers:
+
+```
+validateAllPlaced -> getIncorrectPlacements -> check autofill -> saveAttemptLocally -> submitFinalTime -> showCongrats
+```
+
+Each worker can now be read, tested, and debugged on its own. For example, `getIncorrectPlacements()` has no dependency on the timer, the username, or localStorage. You could call it in isolation and verify it returns the correct array without touching anything else.
+
+### Connection to APCSP Function Requirements
+
+Each extracted worker also satisfies the APCSP procedural abstraction requirements:
+
+- **Parameters:** `validateAllPlaced` takes `placedImages` so it is not hardwired to a global; `saveAttemptLocally` takes `username` and `elapsed` to customize the record it saves
+- **Algorithm:** Each function contains a clear sequence of steps focused on one outcome
+- **Return value:** `validateAllPlaced` returns a boolean the orchestrator uses to decide whether to continue; `getIncorrectPlacements` returns an array the orchestrator inspects before proceeding
+- **Abstraction:** The submit handler does not need to know how bins are queried or how localStorage is structured; it just calls the function and uses the result
+
+### Summary
+
+The before version is a monolithic handler where everything happens in one place. The after version separates workers from the orchestrator, making each piece independently readable, testable, and reusable, which is the core goal of the Single Responsibility Principle.
