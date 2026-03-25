@@ -1,7 +1,8 @@
 ---
 layout: base
-title: I'm Anwita Bandaru
+title: I'm [Your Full Name]
 hide: true
+show_reading_time: false
 ---
 
 Hi! My name is Anwita Bandaru
@@ -11,17 +12,17 @@ Hi! My name is Anwita Bandaru
 > Coding starts with tools, explore these tools and procedures with a click.
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <a href="https://github.com/Open-Coding-Society/student">
-        <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+    <a href="https://opencodingsociety.com" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid #FA8072; border-radius: 6px; font-weight: 700;">
+        <img src="{{ '/favicon.ico' | relative_url }}" alt="OCS logo" style="width: 16px; height: 16px;">
+        OCS
     </a>
-    <a href="https://open-coding-society.github.io/student">
-        <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages">
+    <a href="https://github.com/Open-Coding-Society/portfolio" style=" text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid #FFF; border-radius: 6px; font-weight: 700;">
+        <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub logo" style="width: 16px; height: 16px;">
+        GitHub
     </a>
-    <a href="https://kasm.nighthawkcodingsociety.com/">
-        <img src="https://img.shields.io/badge/KASM-0078D4?style=for-the-badge&logo=kasm&logoColor=white" alt="KASM">
-    </a>
-    <a href="https://vscode.dev/">
-        <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="VSCode">
+    <a href="https://vscode.dev/" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid #007ACC; border-radius: 6px; font-weight: 700;">
+        <img src="https://vscode.dev/favicon.ico" alt="VSCode logo" style="width: 16px; height: 16px;">
+        VSCode.dev
     </a>
 </div>
 
@@ -33,12 +34,12 @@ Hi! My name is Anwita Bandaru
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
-        <div style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
+        <div style="background-color: #00FF00; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             Snake Game
         </div>
     </a>
     <a href="{{site.baseurl}}/turtle" style="text-decoration: none;">
-        <div style="background-color: #a26360; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
+        <div style="background-color: #FF0000; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             Turtle
         </div>
     </a>
@@ -51,7 +52,7 @@ Hi! My name is Anwita Bandaru
 
 > Feel free to reach out if you'd like to collaborate or learn more about our work.
 
-<p style="color: #a26360;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #a26360; text-decoration: underline;">Socials</a></p>
+<p style="color: #2A7DB1;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #2A7DB1; text-decoration: underline;">Socials</a></p>
 
 Click the button below for confetti:
 
