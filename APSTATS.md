@@ -31,7 +31,6 @@ permalink: /apstats
     background: var(--navy);
     color: var(--text);
     line-height: 1.7;
-    max-width: 1000px !important;
   }
 
   /* HEADER */

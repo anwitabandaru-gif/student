@@ -67,7 +67,6 @@ permalink: /apush
     color: var(--cream);
     font-family: 'Source Serif 4', Georgia, serif;
     min-height: 100vh;
-    max-width: 1000px !important;
   }
 
   header {
