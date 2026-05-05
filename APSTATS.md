@@ -28,9 +28,10 @@ permalink: /apstats
 
   body {
     font-family: 'Source Serif 4', Georgia, serif;
-    background: var(--cream);
+    background: var(--navy);
     color: var(--text);
     line-height: 1.7;
+    max-width: 1000px !important;
   }
 
   /* HEADER */
@@ -260,7 +261,7 @@ permalink: /apstats
     font-family: 'Playfair Display', serif;
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--navy);
+    color: var(--navy) !important;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
