@@ -1,21 +1,21 @@
 @import "../../materials/main.scss";
 
 h1, h2, h3, h4 {
-    color: $white1 !important;
+    color: $white1;
 }
 
 p {
-    color: $white3 !important;
+    color: $white3;
 }
 
 a {
-    color: $lightBlue1 !important;
+    color: $lightBlue1;
 
     &:hover {
-        color: $white2 !important;
+        color: $white2;
     }
 }
 
 li, ul, ol {
-    color: $white3 !important;
+    color: $white3;
 }

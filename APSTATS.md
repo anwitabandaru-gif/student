@@ -269,7 +269,7 @@ permalink: /apstats
   .card p, .card li {
     font-size: 0.88rem;
     line-height: 1.7;
-    color: #2a2a3e;
+    color: #2a2a3e !important;
   }
 
   .card ul { padding-left: 18px; }
